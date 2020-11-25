@@ -5,7 +5,7 @@ class Home extends Component {
         return (
             <div>
                 <h1>Home</h1>
-                <p>This is a public route</p>
+                <p>This is both a public and non-public route</p>
             </div>
         )
     }

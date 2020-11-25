@@ -1,3 +1,4 @@
+import React, { Fragment, useState } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
@@ -5,7 +6,15 @@ import Settings from './pages/Settings'
 import Login from './pages/Login'
 import Register from './pages/Register'
 
-function App() {
+import PublicRoute from './components/PublicRoute'
+import ProtectedRoute from './components/ProtectedRoute'
+
+const App = () => {
+    const [accessToken, setAccessToken] = useState()
+    const [refreshToken, setRefreshToken] = useState()
+
+    const authenticated = () => !!accessToken
+
     return (
         <Router>
             <div className="app">
@@ -13,10 +22,18 @@ function App() {
                     <Link to="/">Auth App</Link>
 
                     <nav>
-                        <Link to="/dashboard">Dashboard</Link>
-                        <Link to="/Settings">Settings</Link>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
+                        {authenticated() && (
+                            <Fragment>
+                                <Link to="/dashboard">Dashboard</Link>
+                                <Link to="/Settings">Settings</Link>
+                            </Fragment>
+                        )}
+                        {!authenticated() && (
+                            <Fragment>
+                                <Link to="/login">Login</Link>
+                                <Link to="/register">Register</Link>
+                            </Fragment>
+                        )}
                     </nav>
                 </header>
 
@@ -25,18 +42,38 @@ function App() {
                         <Route exact path="/">
                             <Home />
                         </Route>
-                        <Route path="/dashboard">
+                        <ProtectedRoute
+                            authenticated={authenticated()}
+                            redirect="/login"
+                            path="/dashboard"
+                        >
                             <Dashboard />
-                        </Route>
-                        <Route path="/settings">
+                        </ProtectedRoute>
+                        <ProtectedRoute
+                            authenticated={authenticated()}
+                            redirect="/login"
+                            path="/settings"
+                        >
                             <Settings />
-                        </Route>
-                        <Route path="/login">
-                            <Login />
-                        </Route>
-                        <Route path="/register">
+                        </ProtectedRoute>
+                        <PublicRoute
+                            authenticated={authenticated()}
+                            redirect="/dashboard"
+                            path="/login"
+                        >
+                            <Login
+                                setAccessToken={setAccessToken}
+                                setRefreshToken={setRefreshToken}
+                            />
+                        </PublicRoute>
+                        <PublicRoute
+                            authenticated={authenticated()}
+                            redirect="/dashboard"
+                            path="/register"
+                        >
                             <Register />
-                        </Route>
+                        </PublicRoute>
+                        )}
                     </Switch>
                 </main>
             </div>
