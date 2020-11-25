@@ -60,6 +60,21 @@ const storeUser = async (name, email, password) => {
     await db.end()
 }
 
+const updateUser = async (id, fields, values) => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format(
+            `
+            UPDATE users 
+            SET ${fields.map(field => field + ' = ?').join(',')}
+            WHERE id = ?;
+            `,
+            [...values, id]
+        )
+    )
+    await db.end()
+}
+
 const storeRefreshToken = async (token, id) => {
     const db = await getConnection()
     const results = await db.query(
@@ -75,5 +90,6 @@ module.exports = {
     setup,
     getUserByEmail,
     storeUser,
+    updateUser,
     storeRefreshToken,
 }

@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-const send = (to, subject, text) => {
+const send = (to, subject, html) => {
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
@@ -14,7 +14,7 @@ const send = (to, subject, text) => {
         from: 'asbj3126@stud.kea.dk',
         to,
         subject,
-        text,
+        html,
     })
 }
 

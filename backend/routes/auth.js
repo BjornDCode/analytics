@@ -51,16 +51,28 @@ router.post('/register', async (request, response) => {
         return response.status(401).send({ message: 'Passwords must match' })
     }
 
-    // database.storeUser(username, email, await encryption.hash(password))
+    database.storeUser(username, email, await encryption.hash(password))
     mail.send(
         email,
         'Please confirm your email',
-        `You've signed up for the KEA auth app. Please confirm your email to continue by clicking the link below.`
+        `You've signed up for the KEA auth app. Please confirm your email to continue by clicking the link below. <a href="http://localhost:8080/confirm-email/${encryption.toBase64(
+            email
+        )}">Confirm email</a>`
     )
 
     return response.send({
         message: 'User created',
     })
+})
+
+router.get('/confirm-email/:hash', async (request, response) => {
+    const hash = request.params.hash || ''
+    const email = encryption.fromBase64(hash)
+
+    const record = await database.getUserByEmail(email)
+    database.updateUser(record.id, ['email_confirmed'], [1])
+
+    return response.send('Confirmed')
 })
 
 module.exports = router
