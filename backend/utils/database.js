@@ -34,8 +34,18 @@ const setup = async () => {
             user_id BIGINT(20) UNSIGNED NOT NULL
         );
     `
+
+    const postsTable = `
+        CREATE TABLE posts(
+            id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            user_id BIGINT(20) UNSIGNED NOT NULL
+        );   
+    `
+
     await db.query(usersTable)
     await db.query(refreshTokensTable)
+    await db.query(postsTable)
 
     await db.end()
 }
@@ -51,13 +61,16 @@ const getUserByEmail = async email => {
 
 const storeUser = async (name, email, password) => {
     const db = await getConnection()
-    const results = await db.query(
+    await db.query(
         SqlString.format(
             'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
             [name, email, password]
         )
     )
+
     await db.end()
+
+    return await getUserByEmail(email)
 }
 
 const updateUser = async (id, fields, values) => {
@@ -86,10 +99,42 @@ const storeRefreshToken = async (token, id) => {
     await db.end()
 }
 
+const deleteRefreshToken = async id => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('DELETE FROM refresh_tokens WHERE user_id = ?', [id])
+    )
+    await db.end()
+}
+
+const getPostsByUserId = async id => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('SELECT * FROM posts WHERE id = ?', [id])
+    )
+    await db.end()
+
+    return results
+}
+
+const storePost = async (title, id) => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('INSERT INTO posts (title, user_id) VALUES (?, ?)', [
+            title,
+            id,
+        ])
+    )
+    await db.end()
+}
+
 module.exports = {
     setup,
     getUserByEmail,
     storeUser,
     updateUser,
     storeRefreshToken,
+    deleteRefreshToken,
+    getPostsByUserId,
+    storePost,
 }

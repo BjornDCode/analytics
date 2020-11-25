@@ -1,9 +1,12 @@
 const express = require('express')
+const randomWords = require('random-words')
 
 const tokens = require('../utils/tokens')
 const database = require('../utils/database')
 const encryption = require('../utils/encryption')
 const mail = require('../utils/mail')
+
+const authenticate = require('../middleware/authenticate')
 
 const router = express.Router()
 
@@ -23,7 +26,7 @@ router.post('/login', async (request, response) => {
         return response.status(401).send({ message: 'Could not authenticate' })
     }
 
-    const user = { name: record.username }
+    const user = { name: record.username, id: record.id }
     const accessToken = tokens.generateAccessToken(user)
     const refreshToken = tokens.generateRefreshToken(user)
 
@@ -51,7 +54,11 @@ router.post('/register', async (request, response) => {
         return response.status(401).send({ message: 'Passwords must match' })
     }
 
-    database.storeUser(username, email, await encryption.hash(password))
+    const user = await database.storeUser(
+        username,
+        email,
+        await encryption.hash(password)
+    )
     mail.send(
         email,
         'Please confirm your email',
@@ -59,6 +66,11 @@ router.post('/register', async (request, response) => {
             email
         )}">Confirm email</a>`
     )
+
+    // Store dummy data for user
+    for (let i = 0; i < 10; i++) {
+        database.storePost(randomWords(5).join(' '), user.id)
+    }
 
     return response.send({
         message: 'User created',
@@ -73,6 +85,11 @@ router.get('/confirm-email/:hash', async (request, response) => {
     database.updateUser(record.id, ['email_confirmed'], [1])
 
     return response.send('Confirmed')
+})
+
+router.post('/logout', authenticate, async (request, response) => {
+    await database.deleteRefreshToken(request.user.id)
+    return response.json({})
 })
 
 module.exports = router

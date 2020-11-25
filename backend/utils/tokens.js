@@ -10,7 +10,14 @@ const generateRefreshToken = user => {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
 }
 
+const verify = (token, callback = () => {}) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+        callback(error, user)
+    })
+}
+
 module.exports = {
     generateAccessToken,
     generateRefreshToken,
+    verify,
 }

@@ -1,29 +1,21 @@
 import React, { useState } from 'react'
+import api from '../helpers/api'
 
-const Login = ({ setAccessToken, setRefreshToken }) => {
+const Login = ({ onLogin }) => {
     const [error, setError] = useState(false)
     const [form, setForm] = useState({ email: '', password: '' })
     const update = (key, value) => setForm({ ...form, [key]: value })
 
     const login = async ({ email, password }) => {
-        let response = await fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
+        api.post('/login', { email, password }, (response, data) => {
+            if (response.status !== 200) {
+                return setError(data.message)
+            }
+
+            localStorage.setItem('accessToken', data.accessToken)
+            localStorage.setItem('refreshToken', data.accessToken)
+            onLogin()
         })
-        const data = await response.json()
-
-        if (response.status !== 200) {
-            return setError(data.message)
-        }
-
-        setAccessToken(data.accessToken)
-        setRefreshToken(data.refreshToken)
     }
 
     const onSubmit = event => {

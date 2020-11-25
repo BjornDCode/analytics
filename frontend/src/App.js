@@ -4,16 +4,16 @@ import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
+import Logout from './pages/Logout'
 import Register from './pages/Register'
 
 import PublicRoute from './components/PublicRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
-    const [accessToken, setAccessToken] = useState()
-    const [refreshToken, setRefreshToken] = useState()
-
-    const authenticated = () => !!accessToken
+    const [authenticated, setAuthenticated] = useState(
+        !!localStorage.getItem('accessToken')
+    )
 
     return (
         <Router>
@@ -22,13 +22,14 @@ const App = () => {
                     <Link to="/">Auth App</Link>
 
                     <nav>
-                        {authenticated() && (
+                        {authenticated && (
                             <Fragment>
                                 <Link to="/dashboard">Dashboard</Link>
                                 <Link to="/Settings">Settings</Link>
+                                <Link to="/logout">Logout</Link>
                             </Fragment>
                         )}
-                        {!authenticated() && (
+                        {!authenticated && (
                             <Fragment>
                                 <Link to="/login">Login</Link>
                                 <Link to="/register">Register</Link>
@@ -43,31 +44,35 @@ const App = () => {
                             <Home />
                         </Route>
                         <ProtectedRoute
-                            authenticated={authenticated()}
+                            authenticated={authenticated}
                             redirect="/login"
                             path="/dashboard"
                         >
                             <Dashboard />
                         </ProtectedRoute>
                         <ProtectedRoute
-                            authenticated={authenticated()}
+                            authenticated={authenticated}
                             redirect="/login"
                             path="/settings"
                         >
                             <Settings />
                         </ProtectedRoute>
+                        <ProtectedRoute
+                            authenticated={authenticated}
+                            redirect="/login"
+                            path="/logout"
+                        >
+                            <Logout onLogout={() => setAuthenticated(false)} />
+                        </ProtectedRoute>
                         <PublicRoute
-                            authenticated={authenticated()}
+                            authenticated={authenticated}
                             redirect="/dashboard"
                             path="/login"
                         >
-                            <Login
-                                setAccessToken={setAccessToken}
-                                setRefreshToken={setRefreshToken}
-                            />
+                            <Login onLogin={() => setAuthenticated(true)} />
                         </PublicRoute>
                         <PublicRoute
-                            authenticated={authenticated()}
+                            authenticated={authenticated}
                             redirect="/dashboard"
                             path="/register"
                         >
