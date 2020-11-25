@@ -2,17 +2,17 @@ import React, { useState } from 'react'
 
 const Login = ({ setAccessToken, setRefreshToken }) => {
     const [error, setError] = useState(false)
-    const [form, setForm] = useState({ username: '', password: '' })
+    const [form, setForm] = useState({ email: '', password: '' })
     const update = (key, value) => setForm({ ...form, [key]: value })
 
-    const login = async ({ username, password }) => {
+    const login = async ({ email, password }) => {
         let response = await fetch('http://localhost:8080/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username,
+                email,
                 password,
             }),
         })
@@ -36,15 +36,13 @@ const Login = ({ setAccessToken, setRefreshToken }) => {
             <h1>Login</h1>
             <form onSubmit={onSubmit}>
                 <div>
-                    <label>Username</label>
+                    <label>Email</label>
                     <input
-                        type="text"
-                        name="username"
+                        type="email"
+                        name="email"
                         placeholder="John"
-                        value={form.username}
-                        onChange={event =>
-                            update('username', event.target.value)
-                        }
+                        value={form.email}
+                        onChange={event => update('email', event.target.value)}
                     />
                 </div>
                 <div>

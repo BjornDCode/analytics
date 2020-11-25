@@ -20,6 +20,7 @@ const setup = async () => {
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             password VARCHAR(255) NOT NULL,
+            email_confirmed BOOLEAN DEFAULT 0,
             created_at TIMESTAMP DEFAULT NOW(),
             updated_at TIMESTAMP DEFAULT NOW()
         );
@@ -39,15 +40,24 @@ const setup = async () => {
     await db.end()
 }
 
-const getUserByUsername = async username => {
+const getUserByEmail = async email => {
     const db = await getConnection()
     const results = await db.query(
-        SqlString.format('SELECT * FROM users WHERE name = ? LIMIT 1', [
-            username,
-        ])
+        SqlString.format('SELECT * FROM users WHERE email = ? LIMIT 1', [email])
     )
     await db.end()
     return results[0]
+}
+
+const storeUser = async (name, email, password) => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format(
+            'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+            [name, email, password]
+        )
+    )
+    await db.end()
 }
 
 const storeRefreshToken = async (token, id) => {
@@ -63,6 +73,7 @@ const storeRefreshToken = async (token, id) => {
 
 module.exports = {
     setup,
-    getUserByUsername,
+    getUserByEmail,
+    storeUser,
     storeRefreshToken,
 }
