@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.app > header {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.app > header nav a {
+    margin-left: 1rem;
+}
