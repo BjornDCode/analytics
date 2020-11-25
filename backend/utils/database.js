@@ -88,6 +88,18 @@ const updateUser = async (id, fields, values) => {
     await db.end()
 }
 
+const getRefreshTokenByToken = async token => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format(
+            'SELECT * FROM refresh_tokens WHERE token = ? LIMIT 1',
+            [token]
+        )
+    )
+    await db.end()
+    return results[0]
+}
+
 const storeRefreshToken = async (token, id) => {
     const db = await getConnection()
     const results = await db.query(
@@ -110,7 +122,7 @@ const deleteRefreshToken = async id => {
 const getPostsByUserId = async id => {
     const db = await getConnection()
     const results = await db.query(
-        SqlString.format('SELECT * FROM posts WHERE id = ?', [id])
+        SqlString.format('SELECT * FROM posts WHERE user_id = ?', [id])
     )
     await db.end()
 
@@ -133,6 +145,7 @@ module.exports = {
     getUserByEmail,
     storeUser,
     updateUser,
+    getRefreshTokenByToken,
     storeRefreshToken,
     deleteRefreshToken,
     getPostsByUserId,

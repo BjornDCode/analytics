@@ -13,7 +13,7 @@ const Login = ({ onLogin }) => {
             }
 
             localStorage.setItem('accessToken', data.accessToken)
-            localStorage.setItem('refreshToken', data.accessToken)
+            localStorage.setItem('refreshToken', data.refreshToken)
             onLogin()
         })
     }

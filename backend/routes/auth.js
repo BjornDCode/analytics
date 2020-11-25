@@ -92,4 +92,31 @@ router.post('/logout', authenticate, async (request, response) => {
     return response.json({})
 })
 
+router.post('/token', async (request, response) => {
+    const refreshToken = request.body.token || ''
+
+    if (refreshToken == null) {
+        return response.sendStatus(401)
+    }
+
+    const exists = await database.getRefreshTokenByToken(refreshToken)
+
+    if (!exists) {
+        return response.sendStatus(403)
+    }
+
+    tokens.verifyRefresh(refreshToken, (error, user) => {
+        if (error) {
+            return response.sendStatus(403)
+        }
+
+        const accessToken = tokens.generateAccessToken({
+            name: user.name,
+            id: user.id,
+        })
+
+        return response.json({ accessToken: accessToken })
+    })
+})
+
 module.exports = router
