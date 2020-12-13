@@ -1,6 +1,6 @@
-# Auth
+# Analytics
 
-This project is an example of how to make a session-based authentication system using Node & React.
+This project is an example app using Node and React.
 
 ## Backend
 
