@@ -51,7 +51,7 @@ const post = async (endpoint, body = {}, callback = () => {}) => {
     callback(response, data)
 }
 
-module.exports = {
+export default {
     get,
     post,
 }
