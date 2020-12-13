@@ -51,7 +51,9 @@ const post = async (endpoint, body = {}, callback = () => {}) => {
     callback(response, data)
 }
 
-export default {
+const api = {
     get,
     post,
 }
+
+export default api
