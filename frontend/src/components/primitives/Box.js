@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { propToClasses } from '~/helpers/methods'
-import useClasses from '~/hooks/useClasses'
+import { useClasses, propToClasses } from '~/hooks/useClasses'
 
 const Box = ({
     className = '',

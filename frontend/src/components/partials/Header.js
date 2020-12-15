@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react'
 
-import Box from '@/primitives/Box'
-import Icon from '@/primitives/Icon'
 import Link from '@/routes/Link'
+import Icon from '@/primitives/Icon'
+import Shelf from '@/primitives/Shelf'
 import NavigationLink from '@/partials/NavigationLink'
 
 const Header = ({ authenticated }) => {
@@ -10,12 +10,7 @@ const Header = ({ authenticated }) => {
 
     return (
         <header>
-            <Box
-                spaceY={2}
-                spaceX={{ df: 2, lg: 8 }}
-                display="flex"
-                justify="between"
-            >
+            <Shelf justify="between" spaceY={2} spaceX={{ df: 2, lg: 8 }}>
                 <Link to="/" className="text-pink-500">
                     Analytics
                 </Link>
@@ -23,7 +18,7 @@ const Header = ({ authenticated }) => {
                 <button type="button">
                     <Icon name="Menu" />
                 </button>
-            </Box>
+            </Shelf>
 
             <nav>
                 {authenticated && (
