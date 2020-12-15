@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import api from '../helpers/api'
+import api from '~/helpers/api'
 
 const Login = ({ onLogin }) => {
     const [error, setError] = useState(false)

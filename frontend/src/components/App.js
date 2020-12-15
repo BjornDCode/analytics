@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Home from './pages/Home'
-import Dashboard from './pages/Dashboard'
-import Settings from './pages/Settings'
-import Login from './pages/Login'
-import Logout from './pages/Logout'
-import Register from './pages/Register'
+import Home from '@/pages/Home'
+import Dashboard from '@/pages/Dashboard'
+import Settings from '@/pages/Settings'
+import Login from '@/pages/Login'
+import Logout from '@/pages/Logout'
+import Register from '@/pages/Register'
 
-import PublicRoute from './components/PublicRoute'
-import ProtectedRoute from './components/ProtectedRoute'
+import PublicRoute from '@/routes/PublicRoute'
+import ProtectedRoute from '@/routes/ProtectedRoute'
 
 const App = () => {
     const [authenticated, setAuthenticated] = useState(

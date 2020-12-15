@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import api from '../helpers/api'
+import api from '~/helpers/api'
 
 class Dashboard extends Component {
     constructor(props) {

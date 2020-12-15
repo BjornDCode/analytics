@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import api from '../helpers/api'
+import api from '~/helpers/api'
 
 const Logout = ({ onLogout }) => {
     const [finished, setFinished] = useState(false)
