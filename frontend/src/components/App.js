@@ -1,5 +1,8 @@
-import React, { Fragment, useState } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
+
+import AuthenticationContext from '~/state/AuthenticationContext'
+
 import Home from '@/pages/Home'
 import Dashboard from '@/pages/Dashboard'
 import Settings from '@/pages/Settings'
@@ -7,8 +10,45 @@ import Login from '@/pages/Login'
 import Logout from '@/pages/Logout'
 import Register from '@/pages/Register'
 
+import Route from '@/routes/Route'
 import PublicRoute from '@/routes/PublicRoute'
 import ProtectedRoute from '@/routes/ProtectedRoute'
+
+const routes = [
+    {
+        component: Home,
+        type: Route,
+        path: '/',
+        props: {
+            exact: true,
+        },
+    },
+    {
+        component: Dashboard,
+        type: ProtectedRoute,
+        path: '/dashboard',
+    },
+    {
+        component: Settings,
+        type: ProtectedRoute,
+        path: '/settings',
+    },
+    {
+        component: Logout,
+        type: ProtectedRoute,
+        path: '/logout',
+    },
+    {
+        component: Login,
+        type: PublicRoute,
+        path: '/login',
+    },
+    {
+        component: Register,
+        type: PublicRoute,
+        path: '/register',
+    },
+]
 
 const App = () => {
     const [authenticated, setAuthenticated] = useState(
@@ -16,73 +56,23 @@ const App = () => {
     )
 
     return (
-        <Router>
-            <div className="app">
-                <header>
-                    <Link to="/">Auth App</Link>
-
-                    <nav>
-                        {authenticated && (
-                            <Fragment>
-                                <Link to="/dashboard">Dashboard</Link>
-                                <Link to="/Settings">Settings</Link>
-                                <Link to="/logout">Logout</Link>
-                            </Fragment>
-                        )}
-                        {!authenticated && (
-                            <Fragment>
-                                <Link to="/login">Login</Link>
-                                <Link to="/register">Register</Link>
-                            </Fragment>
-                        )}
-                    </nav>
-                </header>
-
-                <main>
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                        <ProtectedRoute
-                            authenticated={authenticated}
-                            redirect="/login"
-                            path="/dashboard"
+        <AuthenticationContext.Provider value={authenticated}>
+            <Router>
+                <Switch>
+                    {routes.map(route => (
+                        <route.type
+                            key={route.path}
+                            {...route.props}
+                            path={route.path}
                         >
-                            <Dashboard />
-                        </ProtectedRoute>
-                        <ProtectedRoute
-                            authenticated={authenticated}
-                            redirect="/login"
-                            path="/settings"
-                        >
-                            <Settings />
-                        </ProtectedRoute>
-                        <ProtectedRoute
-                            authenticated={authenticated}
-                            redirect="/login"
-                            path="/logout"
-                        >
-                            <Logout onLogout={() => setAuthenticated(false)} />
-                        </ProtectedRoute>
-                        <PublicRoute
-                            authenticated={authenticated}
-                            redirect="/dashboard"
-                            path="/login"
-                        >
-                            <Login onLogin={() => setAuthenticated(true)} />
-                        </PublicRoute>
-                        <PublicRoute
-                            authenticated={authenticated}
-                            redirect="/dashboard"
-                            path="/register"
-                        >
-                            <Register />
-                        </PublicRoute>
-                        )}
-                    </Switch>
-                </main>
-            </div>
-        </Router>
+                            <route.component
+                                setAuthenticated={setAuthenticated}
+                            />
+                        </route.type>
+                    ))}
+                </Switch>
+            </Router>
+        </AuthenticationContext.Provider>
     )
 }
 

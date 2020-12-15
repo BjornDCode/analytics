@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+
 import api from '~/helpers/api'
+
+import Simple from '@/layouts/Simple'
 
 class Dashboard extends Component {
     constructor(props) {
@@ -21,12 +24,12 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <div>
+            <Simple>
                 <h1>Dashboard</h1>
                 {this.state.posts.map(post => (
                     <div key={post.id}>{post.title}</div>
                 ))}
-            </div>
+            </Simple>
         )
     }
 }

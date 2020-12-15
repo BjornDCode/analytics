@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+
 import api from '~/helpers/api'
 
-const Login = ({ onLogin }) => {
+import Simple from '@/layouts/Simple'
+
+const Login = ({ authenticated, setAuthenticated }) => {
     const [error, setError] = useState(false)
     const [form, setForm] = useState({ email: '', password: '' })
     const update = (key, value) => setForm({ ...form, [key]: value })
@@ -14,7 +17,7 @@ const Login = ({ onLogin }) => {
 
             localStorage.setItem('accessToken', data.accessToken)
             localStorage.setItem('refreshToken', data.refreshToken)
-            onLogin()
+            setAuthenticated(true)
         })
     }
 
@@ -24,7 +27,7 @@ const Login = ({ onLogin }) => {
     }
 
     return (
-        <div>
+        <Simple>
             <h1>Login</h1>
             <form onSubmit={onSubmit}>
                 <div>
@@ -52,7 +55,7 @@ const Login = ({ onLogin }) => {
                 <button type="submit">Login</button>
             </form>
             {error && <p>{error}</p>}
-        </div>
+        </Simple>
     )
 }
 

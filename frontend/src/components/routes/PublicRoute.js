@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
-const PublicRoute = ({ authenticated, redirect = '', ...props }) =>
-    authenticated ? <Redirect to={redirect} /> : <Route {...props} />
+import AuthenticationContext from '~/state/AuthenticationContext'
+
+const PublicRoute = ({ redirect = '/dashboard', ...props }) => {
+    const authenticated = useContext(AuthenticationContext)
+
+    return authenticated ? <Redirect to={redirect} /> : <Route {...props} />
+}
 
 export default PublicRoute

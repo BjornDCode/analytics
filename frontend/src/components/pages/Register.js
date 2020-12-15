@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom'
 
 import api from '~/helpers/api'
 
+import Simple from '@/layouts/Simple'
+
 const Register = () => {
     const [error, setError] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -32,7 +34,7 @@ const Register = () => {
     return success ? (
         <Redirect to="/login" />
     ) : (
-        <div>
+        <Simple>
             <h1>Register</h1>
             <form onSubmit={onSubmit}>
                 <div>
@@ -84,7 +86,7 @@ const Register = () => {
                 <button type="submit">Login</button>
             </form>
             {error && <p>{error}</p>}
-        </div>
+        </Simple>
     )
 }
 
