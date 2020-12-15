@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 
 import Box from '@/primitives/Box'
 import Icon from '@/primitives/Icon'
@@ -6,6 +6,8 @@ import Link from '@/routes/Link'
 import NavigationLink from '@/partials/NavigationLink'
 
 const Header = ({ authenticated }) => {
+    const [show, setShow] = useState(false)
+
     return (
         <header>
             <Box

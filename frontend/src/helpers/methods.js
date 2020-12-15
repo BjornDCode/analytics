@@ -1,3 +1,5 @@
+import memoizeOne from 'memoize-one'
+
 export const match = (key, values) => values[key] || values['default']
 
 export const defaultFunction = value => value
@@ -16,7 +18,7 @@ export const responsiveObjectToClasses = (prop, factory = defaultFunction) => {
         .join(' ')
 }
 
-export const propToClasses = (prop, factory) => {
+const propToClassesUnmemoized = (prop, factory) => {
     if (!prop) {
         return ''
     }
@@ -27,3 +29,4 @@ export const propToClasses = (prop, factory) => {
 
     return responsiveObjectToClasses(prop, factory)
 }
+export const propToClasses = memoizeOne(propToClassesUnmemoized)

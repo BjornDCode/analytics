@@ -1,8 +1,7 @@
 import React from 'react'
 
-import merge from 'classnames'
-
 import { propToClasses } from '~/helpers/methods'
+import useClasses from '~/hooks/useClasses'
 
 const Box = ({
     className = '',
@@ -19,7 +18,7 @@ const Box = ({
     children,
     ...props
 }) => {
-    const classes = merge(
+    const [classes] = useClasses(
         className,
         propToClasses(display),
         propToClasses(justify, value => `justify-${value}`),
