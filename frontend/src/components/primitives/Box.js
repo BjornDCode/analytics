@@ -11,12 +11,13 @@ const borderPropToClasses = direction => {
     }
 }
 
-const borderRadiusToClasses = value => {
-    if (value === 'normal') {
-        return 'rounded'
-    }
+const borderRadiusToClasses = direction => {
+    return value => {
+        const directionModifier = direction ? `-${direction}` : ''
+        const valueModifier = value != 'normal' ? `-${value}` : ''
 
-    return `rounded-${value}`
+        return `rounded${directionModifier}${valueModifier}`
+    }
 }
 
 const borderColorPropsToClasses = (color, shade) => {
@@ -41,13 +42,15 @@ const Box = ({
     backgroundColor,
     backgroundShade,
     border,
-    borderX,
-    borderY,
     borderT,
     borderB,
     borderL,
     borderR,
     borderRadius,
+    borderRadiusT,
+    borderRadiusB,
+    borderRadiusL,
+    borderRadiusR,
     borderColor,
     borderShade,
     display,
@@ -77,13 +80,15 @@ const Box = ({
             backgroundColorPropsToClasses
         ),
         propToClasses(border, borderPropToClasses()),
-        propToClasses(borderX, borderPropToClasses('x')),
-        propToClasses(borderY, borderPropToClasses('y')),
         propToClasses(borderT, borderPropToClasses('t')),
         propToClasses(borderB, borderPropToClasses('b')),
         propToClasses(borderL, borderPropToClasses('l')),
         propToClasses(borderR, borderPropToClasses('r')),
-        propToClasses(borderRadius, borderRadiusToClasses),
+        propToClasses(borderRadius, borderRadiusToClasses()),
+        propToClasses(borderRadiusT, borderRadiusToClasses('t')),
+        propToClasses(borderRadiusB, borderRadiusToClasses('b')),
+        propToClasses(borderRadiusL, borderRadiusToClasses('l')),
+        propToClasses(borderRadiusR, borderRadiusToClasses('r')),
         propsToClasses([borderColor, borderShade], borderColorPropsToClasses),
         propToClasses(display),
         propToClasses(justify, value => `justify-${value}`),

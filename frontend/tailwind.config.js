@@ -18,6 +18,7 @@ module.exports = {
         extend: {
             borderColor: ['focus'],
             borderWidth: ['first', 'last'],
+            borderRadius: ['first', 'last'],
             ringWidth: ['focus-visible'],
         },
     },

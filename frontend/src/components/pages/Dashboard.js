@@ -1,37 +1,35 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import api from '~/helpers/api'
+import Simple from '@/layouts/Simple'
 
-import Shell from '@/layouts/Shell'
+import List from '@/primitives/List'
+import LinkListItem from '@/lists/LinkListItem'
 
-class Dashboard extends Component {
-    constructor(props) {
-        super(props)
+const projects = [
+    {
+        id: 1,
+        name: 'useserve.app',
+    },
+    {
+        id: 2,
+        name: 'branchci.com',
+    },
+    {
+        id: 3,
+        name: 'shopify.com',
+    },
+]
 
-        this.state = {
-            posts: [],
-        }
-    }
-
-    componentDidMount() {
-        api.get('/posts', (response, data) => {
-            this.setState({
-                ...this.state,
-                posts: data.data,
-            })
-        })
-    }
-
-    render() {
-        return (
-            <Shell>
-                <h1>Dashboard</h1>
-                {this.state.posts.map(post => (
-                    <div key={post.id}>{post.title}</div>
-                ))}
-            </Shell>
-        )
-    }
-}
+const Dashboard = () => (
+    <Simple headline="Projects">
+        <List>
+            {projects.map(project => (
+                <LinkListItem key={project.id} to={`projects/${project.id}`}>
+                    {project.name}
+                </LinkListItem>
+            ))}
+        </List>
+    </Simple>
+)
 
 export default Dashboard

@@ -11,7 +11,8 @@ const NavigationLink = ({ children, to, ...props }) => (
         {...props}
         display="block"
         space={{ df: 2, md: 0 }}
-        borderX={{ df: 1, md: 0 }}
+        borderL={{ df: 1, md: 0 }}
+        borderR={{ df: 1, md: 0 }}
         borderB={{ df: 1, md: 0 }}
         borderT={{ first: 1, 'md:first': 0 }}
     >
