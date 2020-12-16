@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useClasses, propToClasses } from '~/hooks/useClasses'
+import { useClasses, propToClasses, propsToClasses } from '~/hooks/useClasses'
 
 const borderPropToClasses = direction => {
     return value => {
@@ -11,9 +11,35 @@ const borderPropToClasses = direction => {
     }
 }
 
+const borderRadiusToClasses = value => {
+    if (value === 'normal') {
+        return 'rounded'
+    }
+
+    return `rounded-${value}`
+}
+
+const borderColorPropsToClasses = (color, shade) => {
+    if (!shade) {
+        return `border-${color}`
+    }
+
+    return `border-${color}-${shade}`
+}
+
+const backgroundColorPropsToClasses = (color, shade) => {
+    if (!shade) {
+        return `bg-${color}`
+    }
+
+    return `bg-${color}-${shade}`
+}
+
 const Box = ({
     className = '',
     Component = 'div',
+    backgroundColor,
+    backgroundShade,
     border,
     borderX,
     borderY,
@@ -21,6 +47,9 @@ const Box = ({
     borderB,
     borderL,
     borderR,
+    borderRadius,
+    borderColor,
+    borderShade,
     display,
     justify,
     margin,
@@ -37,11 +66,16 @@ const Box = ({
     spaceR,
     spaceT,
     spaceB,
+    width,
     children,
     ...props
 }) => {
     const [classes] = useClasses(
         className,
+        propsToClasses(
+            [backgroundColor, backgroundShade],
+            backgroundColorPropsToClasses
+        ),
         propToClasses(border, borderPropToClasses()),
         propToClasses(borderX, borderPropToClasses('x')),
         propToClasses(borderY, borderPropToClasses('y')),
@@ -49,6 +83,8 @@ const Box = ({
         propToClasses(borderB, borderPropToClasses('b')),
         propToClasses(borderL, borderPropToClasses('l')),
         propToClasses(borderR, borderPropToClasses('r')),
+        propToClasses(borderRadius, borderRadiusToClasses),
+        propsToClasses([borderColor, borderShade], borderColorPropsToClasses),
         propToClasses(display),
         propToClasses(justify, value => `justify-${value}`),
         propToClasses(margin, value => `m-${value}`),
@@ -64,7 +100,8 @@ const Box = ({
         propToClasses(spaceL, value => `pl-${value}`),
         propToClasses(spaceR, value => `pr-${value}`),
         propToClasses(spaceT, value => `pt-${value}`),
-        propToClasses(spaceB, value => `pb-${value}`)
+        propToClasses(spaceB, value => `pb-${value}`),
+        propToClasses(width, width => `w-${width}`)
     )
 
     return (

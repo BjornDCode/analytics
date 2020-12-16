@@ -1,6 +1,7 @@
 import React, { Children, cloneElement, useContext } from 'react'
 
 import Header from '@/partials/Header'
+import Container from '@/partials/Container'
 
 import AuthenticationContext from '~/state/AuthenticationContext'
 
@@ -9,8 +10,10 @@ const Simple = ({ children, ...props }) => {
 
     return (
         <div>
-            <Header authenticated={authenticated} />
-            <main>{children}</main>
+            <Container>
+                <Header authenticated={authenticated} />
+                <main>{children}</main>
+            </Container>
         </div>
     )
 }

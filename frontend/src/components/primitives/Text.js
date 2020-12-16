@@ -2,6 +2,8 @@ import React from 'react'
 
 import { useClasses, propToClasses, propsToClasses } from '~/hooks/useClasses'
 
+import Box from '@/primitives/Box'
+
 const colorPropsToClasses = (color, shade) => {
     if (!shade) {
         return `text-${color}`
@@ -28,9 +30,9 @@ const Text = ({
     )
 
     return (
-        <Component className={classes} {...props}>
+        <Box Component={Component} className={classes} {...props}>
             {children}
-        </Component>
+        </Box>
     )
 }
 

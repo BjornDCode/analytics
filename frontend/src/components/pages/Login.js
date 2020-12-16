@@ -2,10 +2,20 @@ import React, { useState } from 'react'
 
 import api from '~/helpers/api'
 
-import Simple from '@/layouts/Simple'
+import Auth from '@/layouts/Auth'
+
+import Stack from '@/primitives/Stack'
+import Shelf from '@/primitives/Shelf'
+import Button from '@/primitives/Button'
+
+import Form from '@/forms/Form'
+import FormGroup from '@/forms/FormGroup'
+import FormLabel from '@/forms/FormLabel'
+import FormInput from '@/forms/FormInput'
+import FormError from '@/forms/FormError'
 
 const Login = ({ authenticated, setAuthenticated }) => {
-    const [error, setError] = useState(false)
+    const [error, setError] = useState('This is an error message')
     const [form, setForm] = useState({ email: '', password: '' })
     const update = (key, value) => setForm({ ...form, [key]: value })
 
@@ -27,22 +37,21 @@ const Login = ({ authenticated, setAuthenticated }) => {
     }
 
     return (
-        <Simple>
-            <h1>Login</h1>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
+        <Auth headline="Login">
+            <Stack Component={Form} spacing={4} onSubmit={onSubmit}>
+                <FormGroup>
+                    <FormLabel>Email</FormLabel>
+                    <FormInput
                         type="email"
                         name="email"
                         placeholder="John"
                         value={form.email}
                         onChange={event => update('email', event.target.value)}
                     />
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input
+                </FormGroup>
+                <FormGroup>
+                    <FormLabel>Password</FormLabel>
+                    <FormInput
                         type="password"
                         name="password"
                         placeholder="Password"
@@ -51,11 +60,14 @@ const Login = ({ authenticated, setAuthenticated }) => {
                             update('password', event.target.value)
                         }
                     />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            {error && <p>{error}</p>}
-        </Simple>
+                </FormGroup>
+                <Shelf justify="end">
+                    <Button type="submit">Login</Button>
+                </Shelf>
+
+                {error && <FormError>{error}</FormError>}
+            </Stack>
+        </Auth>
     )
 }
 
