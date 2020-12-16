@@ -10,9 +10,10 @@ const NavigationLink = ({ children, to, ...props }) => (
         to={to}
         {...props}
         display="block"
-        spaceX={2}
-        spaceY={2}
-        className="border-x border-b first:border-t"
+        space={{ df: 2, md: 0 }}
+        borderX={{ df: 1, md: 0 }}
+        borderB={{ df: 1, md: 0 }}
+        borderT={{ first: 1, 'md:first': 0 }}
     >
         <Text
             color="gray"
