@@ -12,7 +12,7 @@ const Logout = ({ setAuthenticated }) => {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
         setFinished(true)
-        setAuthenticated(true)
+        setAuthenticated(false)
     })
 
     return finished ? (
