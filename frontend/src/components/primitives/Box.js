@@ -39,6 +39,7 @@ const backgroundColorPropsToClasses = (color, shade) => {
 const Box = ({
     className = '',
     Component = 'div',
+    align,
     backgroundColor,
     backgroundShade,
     border,
@@ -75,6 +76,7 @@ const Box = ({
 }) => {
     const [classes] = useClasses(
         className,
+        propToClasses(align, align => `items-${align}`),
         propsToClasses(
             [backgroundColor, backgroundShade],
             backgroundColorPropsToClasses

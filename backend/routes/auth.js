@@ -88,7 +88,6 @@ router.get('/confirm-email/:hash', async (request, response) => {
 })
 
 router.post('/logout', authenticate, async (request, response) => {
-    console.log('request', request)
     await database.deleteRefreshToken(request.user.id)
     return response.json({})
 })

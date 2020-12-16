@@ -3,6 +3,7 @@ import { useState } from '@hookstate/core'
 
 import authState from '~/state/auth'
 
+import Box from '@/primitives/Box'
 import Header from '@/partials/Header'
 import Container from '@/partials/Container'
 
@@ -13,7 +14,9 @@ const Shell = ({ children, ...props }) => {
         <div>
             <Container>
                 <Header authenticated={authenticated.get()} />
-                <main>{children}</main>
+                <Box Component="main" space={{ df: 2, md: 0 }}>
+                    {children}
+                </Box>
             </Container>
         </div>
     )

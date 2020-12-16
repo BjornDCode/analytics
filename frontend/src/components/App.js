@@ -7,6 +7,7 @@ import Settings from '@/pages/Settings'
 import Login from '@/pages/Login'
 import Logout from '@/pages/Logout'
 import Register from '@/pages/Register'
+import Project from '@/pages/Project'
 
 import Route from '@/routes/Route'
 import PublicRoute from '@/routes/PublicRoute'
@@ -25,6 +26,11 @@ const routes = [
         component: Dashboard,
         type: ProtectedRoute,
         path: '/dashboard',
+    },
+    {
+        component: Project,
+        type: ProtectedRoute,
+        path: '/projects/:id',
     },
     {
         component: Settings,
