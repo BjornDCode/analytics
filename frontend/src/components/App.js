@@ -8,6 +8,7 @@ import Login from '@/pages/Login'
 import Logout from '@/pages/Logout'
 import Register from '@/pages/Register'
 import Project from '@/pages/Project'
+import Event from '@/pages/Event'
 
 import Route from '@/routes/Route'
 import PublicRoute from '@/routes/PublicRoute'
@@ -31,6 +32,11 @@ const routes = [
         component: Project,
         type: ProtectedRoute,
         path: '/projects/:id',
+    },
+    {
+        component: Event,
+        type: ProtectedRoute,
+        path: '/events/:id',
     },
     {
         component: Settings,

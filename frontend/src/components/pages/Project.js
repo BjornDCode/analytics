@@ -155,17 +155,17 @@ const Project = () => {
                     </LinkButton>
                 </StackShelf>
 
-                <Grid columns={3} gap={6}>
-                    <GridColumn span={3}>
+                <Grid columns={12} gap={6}>
+                    <GridColumn span={12}>
                         <BarChart height={400} data={barData} />
                     </GridColumn>
-                    <GridColumn span={1}>
+                    <GridColumn span={4}>
                         <ListChart headline="Events" data={eventsData} />
                     </GridColumn>
-                    <GridColumn span={1}>
+                    <GridColumn span={4}>
                         <ListChart headline="Devices" data={devicesData} />
                     </GridColumn>
-                    <GridColumn span={1}>
+                    <GridColumn span={4}>
                         <ListChart headline="Countries" data={countriesData} />
                     </GridColumn>
                 </Grid>

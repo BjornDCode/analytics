@@ -14,7 +14,11 @@ const Shell = ({ children, ...props }) => {
         <div>
             <Container>
                 <Header authenticated={authenticated.get()} />
-                <Box Component="main" space={{ df: 2, md: 0 }}>
+                <Box
+                    Component="main"
+                    space={{ df: 2, md: 0 }}
+                    spaceB={{ df: 12, md: 12 }}
+                >
                     {children}
                 </Box>
             </Container>
