@@ -1,26 +1,35 @@
 import React, { Fragment, useState } from 'react'
 
 import Link from '@/routes/Link'
+
+import Box from '@/primitives/Box'
+import Text from '@/primitives/Text'
 import Icon from '@/primitives/Icon'
 import Shelf from '@/primitives/Shelf'
 import NavigationLink from '@/partials/NavigationLink'
 
 const Header = ({ authenticated }) => {
     const [show, setShow] = useState(false)
+    console.log('show', show)
 
     return (
         <header>
             <Shelf justify="between" spaceY={2} spaceX={{ df: 2, lg: 8 }}>
-                <Link to="/" className="text-pink-500">
-                    Analytics
+                <Link to="/">
+                    <Text color="gray" shade="800" weight="semibold">
+                        Analytics
+                    </Text>
                 </Link>
 
-                <button type="button">
+                <button type="button" onClick={() => setShow(!show)}>
                     <Icon name="Menu" />
                 </button>
             </Shelf>
 
-            <nav>
+            <Box
+                Component="nav"
+                display={{ df: show ? 'block' : 'hidden', md: 'block' }}
+            >
                 {authenticated && (
                     <Fragment>
                         <NavigationLink to="/dashboard">
@@ -36,7 +45,7 @@ const Header = ({ authenticated }) => {
                         <NavigationLink to="/register">Register</NavigationLink>
                     </Fragment>
                 )}
-            </nav>
+            </Box>
         </header>
     )
 }
