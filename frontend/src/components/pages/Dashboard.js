@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import api from '~/helpers/api'
 
-import Simple from '@/layouts/Simple'
+import Shell from '@/layouts/Shell'
 
 class Dashboard extends Component {
     constructor(props) {
@@ -24,12 +24,12 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <Simple>
+            <Shell>
                 <h1>Dashboard</h1>
                 {this.state.posts.map(post => (
                     <div key={post.id}>{post.title}</div>
                 ))}
-            </Simple>
+            </Shell>
         )
     }
 }

@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 import api from '~/helpers/api'
 
-import Auth from '@/layouts/Auth'
+import Simple from '@/layouts/Simple'
 
 import Stack from '@/primitives/Stack'
 import Shelf from '@/primitives/Shelf'
@@ -39,7 +39,7 @@ const Register = () => {
     return success ? (
         <Redirect to="/login" />
     ) : (
-        <Auth headline="Register">
+        <Simple headline="Register">
             <Stack Component={Form} spacing={4} onSubmit={() => register(form)}>
                 <FormGroup>
                     <FormLabel>Username</FormLabel>
@@ -94,7 +94,7 @@ const Register = () => {
 
                 {error && <FormError>{error}</FormError>}
             </Stack>
-        </Auth>
+        </Simple>
     )
 }
 

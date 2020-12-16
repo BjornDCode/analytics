@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import api from '~/helpers/api'
 
-import Auth from '@/layouts/Auth'
+import Simple from '@/layouts/Simple'
 
 import Stack from '@/primitives/Stack'
 import Shelf from '@/primitives/Shelf'
@@ -32,7 +32,7 @@ const Login = ({ authenticated, setAuthenticated }) => {
     }
 
     return (
-        <Auth headline="Login">
+        <Simple headline="Login">
             <Stack Component={Form} spacing={4} onSubmit={() => login(form)}>
                 <FormGroup>
                     <FormLabel>Email</FormLabel>
@@ -62,7 +62,7 @@ const Login = ({ authenticated, setAuthenticated }) => {
 
                 {error && <FormError>{error}</FormError>}
             </Stack>
-        </Auth>
+        </Simple>
     )
 }
 

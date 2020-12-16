@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom'
 import api from '~/helpers/api'
 import useMounted from '~/hooks/useMounted'
 
-import Simple from '@/layouts/Simple'
+import Shell from '@/layouts/Shell'
 
 const Logout = ({ setAuthenticated }) => {
     const [finished, setFinished] = useState(false)
@@ -21,9 +21,9 @@ const Logout = ({ setAuthenticated }) => {
     return finished ? (
         <Redirect to="/" />
     ) : (
-        <Simple>
+        <Shell>
             <p>Logging out</p>
-        </Simple>
+        </Shell>
     )
 }
 

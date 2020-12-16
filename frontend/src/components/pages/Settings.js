@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 
-import Simple from '@/layouts/Simple'
+import Shell from '@/layouts/Shell'
 
 class Settings extends Component {
     render() {
         return (
-            <Simple>
+            <Shell>
                 <h1>Settings</h1>
                 <p>This is a non-public route</p>
-            </Simple>
+            </Shell>
         )
     }
 }

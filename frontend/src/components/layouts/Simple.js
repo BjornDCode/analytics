@@ -1,21 +1,21 @@
-import React, { Children, cloneElement, useContext } from 'react'
+import React from 'react'
 
-import Header from '@/partials/Header'
-import Container from '@/partials/Container'
+import Shell from '@/layouts/Shell'
 
-import AuthenticationContext from '~/state/AuthenticationContext'
+import Box from '@/primitives/Box'
+import Stack from '@/primitives/Stack'
+import Headline from '@/primitives/Headline'
 
-const Simple = ({ children, ...props }) => {
-    const authenticated = useContext(AuthenticationContext)
+const Simple = ({ headline, children, ...props }) => (
+    <Shell>
+        <Box className="max-w-xs" spaceY={24} marginX="auto">
+            <Stack spacing={6}>
+                <Headline level={1}>{headline}</Headline>
 
-    return (
-        <div>
-            <Container>
-                <Header authenticated={authenticated} />
-                <main>{children}</main>
-            </Container>
-        </div>
-    )
-}
+                <Box>{children}</Box>
+            </Stack>
+        </Box>
+    </Shell>
+)
 
 export default Simple
