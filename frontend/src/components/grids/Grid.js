@@ -7,7 +7,7 @@ import Box from '@/primitives/Box'
 const Grid = ({ columns = 1, gap, className = '', children, ...props }) => {
     const classes = useClasses(
         className,
-        propToClasses({ df: 1, md: columns }, value => `grid-columns-${value}`),
+        propToClasses({ df: 1, md: columns }, value => `grid-cols-${value}`),
         propToClasses(gap, value => `gap-${value}`)
     )
 

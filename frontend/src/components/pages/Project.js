@@ -8,6 +8,7 @@ import Grid from '@/grids/Grid'
 import GridColumn from '@/grids/GridColumn'
 
 import BarChart from '@/charts/BarChart'
+import ListChart from '@/charts/ListChart'
 
 import Stack from '@/primitives/Stack'
 import Headline from '@/primitives/Headline'
@@ -21,7 +22,7 @@ const Project = () => {
     const projects = useState(projectsState)
     const project = projects[id]
 
-    const data = [
+    const barData = [
         {
             name: 'Dec 08, 2020',
             'Page view': 4321,
@@ -66,6 +67,83 @@ const Project = () => {
         },
     ]
 
+    const eventsData = [
+        {
+            id: 1,
+            label: 'Page view',
+            total: 53,
+            uniques: 32,
+            link: '/events/1',
+        },
+        {
+            id: 2,
+            label: 'Sign up',
+            total: 41,
+            uniques: 29,
+            link: '/events/2',
+        },
+        {
+            id: 3,
+            label: 'Download',
+            total: 35,
+            uniques: 12,
+        },
+    ]
+
+    const devicesData = [
+        {
+            id: 1,
+            label: 'Phone',
+            total: 107,
+            uniques: 88,
+        },
+        {
+            id: 2,
+            label: 'Deskop',
+            total: 57,
+            uniques: 57,
+        },
+        {
+            id: 3,
+            label: 'Tablet',
+            total: 11,
+            uniques: 4,
+        },
+    ]
+
+    const countriesData = [
+        {
+            id: 1,
+            label: 'United States',
+            total: 212,
+            uniques: 107,
+        },
+        {
+            id: 2,
+            label: 'India',
+            total: 42,
+            uniques: 28,
+        },
+        {
+            id: 3,
+            label: 'Brazil',
+            total: 11,
+            uniques: 11,
+        },
+        {
+            id: 4,
+            label: 'United Kingdom',
+            total: 8,
+            uniques: 8,
+        },
+        {
+            id: 5,
+            label: 'Denmark',
+            total: 8,
+            uniques: 8,
+        },
+    ]
+
     return (
         <Shell>
             <Stack spacing={12}>
@@ -79,25 +157,16 @@ const Project = () => {
 
                 <Grid columns={3} gap={6}>
                     <GridColumn span={3}>
-                        <BarChart height={400} data={data} />
+                        <BarChart height={400} data={barData} />
                     </GridColumn>
                     <GridColumn span={1}>
-                        <div
-                            className="bg-pink-500"
-                            style={{ height: '200px' }}
-                        ></div>
+                        <ListChart headline="Events" data={eventsData} />
                     </GridColumn>
                     <GridColumn span={1}>
-                        <div
-                            className="bg-pink-500"
-                            style={{ height: '200px' }}
-                        ></div>
+                        <ListChart headline="Devices" data={devicesData} />
                     </GridColumn>
                     <GridColumn span={1}>
-                        <div
-                            className="bg-pink-500"
-                            style={{ height: '200px' }}
-                        ></div>
+                        <ListChart headline="Countries" data={countriesData} />
                     </GridColumn>
                 </Grid>
             </Stack>
