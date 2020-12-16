@@ -81,5 +81,5 @@ export const propToClasses = memoizeOne(propToClassesUnmemoized)
 export const propsToClasses = memoizeOne(propsToClassesUnmemoized)
 
 export const useClasses = (...classes) => {
-    return [merge(...classes)]
+    return merge(...classes)
 }

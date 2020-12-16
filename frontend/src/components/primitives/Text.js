@@ -22,7 +22,7 @@ const Text = ({
     children,
     ...props
 }) => {
-    const [classes] = useClasses(
+    const classes = useClasses(
         className,
         propsToClasses([color, shade], colorPropsToClasses),
         propToClasses(weight, weight => `font-${weight}`),

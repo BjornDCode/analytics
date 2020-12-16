@@ -4,10 +4,10 @@ import { useClasses, propToClasses } from '~/hooks/useClasses'
 
 import Box from '@/primitives/Box'
 
-const Stack = ({ className = '', spacing, children, ...props }) => {
+const Grid = ({ span = 1, className = '', children, ...props }) => {
     const classes = useClasses(
         className,
-        propToClasses(spacing, value => `space-y-${value}`)
+        propToClasses({ df: 1, md: span }, value => `col-span-${value}`)
     )
 
     return (
@@ -17,4 +17,4 @@ const Stack = ({ className = '', spacing, children, ...props }) => {
     )
 }
 
-export default Stack
+export default Grid

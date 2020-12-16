@@ -74,7 +74,7 @@ const Box = ({
     children,
     ...props
 }) => {
-    const [classes] = useClasses(
+    const classes = useClasses(
         className,
         propToClasses(align, align => `items-${align}`),
         propsToClasses(

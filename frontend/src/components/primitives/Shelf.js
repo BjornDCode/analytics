@@ -11,7 +11,7 @@ const Shelf = ({
     children,
     ...props
 }) => {
-    const [classes] = useClasses(
+    const classes = useClasses(
         className,
         propToClasses(spacing, value => `space-x-${value}`)
     )
