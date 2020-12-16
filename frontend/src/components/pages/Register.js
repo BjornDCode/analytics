@@ -3,7 +3,17 @@ import { Redirect } from 'react-router-dom'
 
 import api from '~/helpers/api'
 
-import Simple from '@/layouts/Simple'
+import Auth from '@/layouts/Auth'
+
+import Stack from '@/primitives/Stack'
+import Shelf from '@/primitives/Shelf'
+import Button from '@/primitives/Button'
+
+import Form from '@/forms/Form'
+import FormGroup from '@/forms/FormGroup'
+import FormLabel from '@/forms/FormLabel'
+import FormInput from '@/forms/FormInput'
+import FormError from '@/forms/FormError'
 
 const Register = () => {
     const [error, setError] = useState(false)
@@ -26,20 +36,14 @@ const Register = () => {
         })
     }
 
-    const onSubmit = event => {
-        event.preventDefault()
-        register(form)
-    }
-
     return success ? (
         <Redirect to="/login" />
     ) : (
-        <Simple>
-            <h1>Register</h1>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label>Username</label>
-                    <input
+        <Auth headline="Register">
+            <Stack Component={Form} spacing={4} onSubmit={() => register(form)}>
+                <FormGroup>
+                    <FormLabel>Username</FormLabel>
+                    <FormInput
                         type="text"
                         name="username"
                         placeholder="John"
@@ -48,20 +52,20 @@ const Register = () => {
                             update('username', event.target.value)
                         }
                     />
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input
+                </FormGroup>
+                <FormGroup>
+                    <FormLabel>Email</FormLabel>
+                    <FormInput
                         type="email"
                         name="email"
                         placeholder="test@example.com"
                         value={form.email}
                         onChange={event => update('email', event.target.value)}
                     />
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input
+                </FormGroup>
+                <FormGroup>
+                    <FormLabel>Password</FormLabel>
+                    <FormInput
                         type="password"
                         name="password"
                         placeholder="Password"
@@ -70,10 +74,10 @@ const Register = () => {
                             update('password', event.target.value)
                         }
                     />
-                </div>
-                <div>
-                    <label>Confirm Password</label>
-                    <input
+                </FormGroup>
+                <FormGroup>
+                    <FormLabel>Confirm password</FormLabel>
+                    <FormInput
                         type="password"
                         name="password_confirmation"
                         placeholder="Confirm password"
@@ -82,11 +86,15 @@ const Register = () => {
                             update('password_confirmation', event.target.value)
                         }
                     />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            {error && <p>{error}</p>}
-        </Simple>
+                </FormGroup>
+
+                <Shelf justify="end">
+                    <Button type="submit">Register</Button>
+                </Shelf>
+
+                {error && <FormError>{error}</FormError>}
+            </Stack>
+        </Auth>
     )
 }
 

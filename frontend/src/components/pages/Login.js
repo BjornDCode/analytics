@@ -15,7 +15,7 @@ import FormInput from '@/forms/FormInput'
 import FormError from '@/forms/FormError'
 
 const Login = ({ authenticated, setAuthenticated }) => {
-    const [error, setError] = useState('This is an error message')
+    const [error, setError] = useState(false)
     const [form, setForm] = useState({ email: '', password: '' })
     const update = (key, value) => setForm({ ...form, [key]: value })
 
@@ -31,14 +31,9 @@ const Login = ({ authenticated, setAuthenticated }) => {
         })
     }
 
-    const onSubmit = event => {
-        event.preventDefault()
-        login(form)
-    }
-
     return (
         <Auth headline="Login">
-            <Stack Component={Form} spacing={4} onSubmit={onSubmit}>
+            <Stack Component={Form} spacing={4} onSubmit={() => login(form)}>
                 <FormGroup>
                     <FormLabel>Email</FormLabel>
                     <FormInput
