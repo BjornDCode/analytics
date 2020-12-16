@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
-
-import AuthenticationContext from '~/state/AuthenticationContext'
 
 import Home from '@/pages/Home'
 import Dashboard from '@/pages/Dashboard'
@@ -51,28 +49,20 @@ const routes = [
 ]
 
 const App = () => {
-    const [authenticated, setAuthenticated] = useState(
-        !!localStorage.getItem('accessToken')
-    )
-
     return (
-        <AuthenticationContext.Provider value={authenticated}>
-            <Router>
-                <Switch>
-                    {routes.map(route => (
-                        <route.type
-                            key={route.path}
-                            {...route.props}
-                            path={route.path}
-                        >
-                            <route.component
-                                setAuthenticated={setAuthenticated}
-                            />
-                        </route.type>
-                    ))}
-                </Switch>
-            </Router>
-        </AuthenticationContext.Provider>
+        <Router>
+            <Switch>
+                {routes.map(route => (
+                    <route.type
+                        key={route.path}
+                        {...route.props}
+                        path={route.path}
+                    >
+                        <route.component />
+                    </route.type>
+                ))}
+            </Switch>
+        </Router>
     )
 }
 

@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useState } from '@hookstate/core'
 
 import api from '~/helpers/api'
+import authState from '~/state/auth'
 
 import Simple from '@/layouts/Simple'
 
@@ -14,33 +16,41 @@ import FormLabel from '@/forms/FormLabel'
 import FormInput from '@/forms/FormInput'
 import FormError from '@/forms/FormError'
 
-const Login = ({ authenticated, setAuthenticated }) => {
-    const [error, setError] = useState(false)
-    const [form, setForm] = useState({ email: '', password: '' })
-    const update = (key, value) => setForm({ ...form, [key]: value })
+const Login = () => {
+    const authenticated = useState(authState).authenticated
+    const error = useState(false)
+    const form = useState({
+        email: '',
+        password: '',
+    })
+    const update = (key, value) => form[key].set(value)
 
     const login = async ({ email, password }) => {
         api.post('/login', { email, password }, (response, data) => {
             if (response.status !== 200) {
-                return setError(data.message)
+                return error.set(data.message)
             }
 
             localStorage.setItem('accessToken', data.accessToken)
             localStorage.setItem('refreshToken', data.refreshToken)
-            setAuthenticated(true)
+            authenticated.set(true)
         })
     }
 
     return (
         <Simple headline="Login">
-            <Stack Component={Form} spacing={4} onSubmit={() => login(form)}>
+            <Stack
+                Component={Form}
+                spacing={4}
+                onSubmit={() => login(form.get())}
+            >
                 <FormGroup>
                     <FormLabel>Email</FormLabel>
                     <FormInput
                         type="email"
                         name="email"
                         placeholder="John"
-                        value={form.email}
+                        value={form.email.get()}
                         onChange={event => update('email', event.target.value)}
                     />
                 </FormGroup>
@@ -50,7 +60,7 @@ const Login = ({ authenticated, setAuthenticated }) => {
                         type="password"
                         name="password"
                         placeholder="Password"
-                        value={form.password}
+                        value={form.password.get()}
                         onChange={event =>
                             update('password', event.target.value)
                         }
@@ -60,7 +70,7 @@ const Login = ({ authenticated, setAuthenticated }) => {
                     <Button type="submit">Login</Button>
                 </Shelf>
 
-                {error && <FormError>{error}</FormError>}
+                {error.get() && <FormError>{error.get()}</FormError>}
             </Stack>
         </Simple>
     )

@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
+import { useState } from '@hookstate/core'
 
 import Link from '@/routes/Link'
 
@@ -9,7 +10,7 @@ import Shelf from '@/primitives/Shelf'
 import NavigationLink from '@/partials/NavigationLink'
 
 const Header = ({ authenticated }) => {
-    const [show, setShow] = useState(false)
+    const show = useState(false)
 
     return (
         <Box
@@ -27,7 +28,7 @@ const Header = ({ authenticated }) => {
                 <Box
                     Component="button"
                     type="button"
-                    onClick={() => setShow(!show)}
+                    onClick={() => show.set(!show.get())}
                     display={{ md: 'hidden' }}
                 >
                     <Icon name="Menu" />
@@ -36,7 +37,7 @@ const Header = ({ authenticated }) => {
 
             <Box
                 Component="nav"
-                display={{ df: show ? 'block' : 'hidden', md: 'flex' }}
+                display={{ df: show.get() ? 'block' : 'hidden', md: 'flex' }}
                 className="md:space-x-4"
             >
                 {authenticated && (

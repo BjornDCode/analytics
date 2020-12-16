@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { useState } from '@hookstate/core'
 
-import AuthenticationContext from '~/state/AuthenticationContext'
+import authState from '~/state/auth'
 
 const PublicRoute = ({ redirect = '/dashboard', ...props }) => {
-    const authenticated = useContext(AuthenticationContext)
+    const authenticated = useState(authState).authenticated.get()
 
     return authenticated ? <Redirect to={redirect} /> : <Route {...props} />
 }

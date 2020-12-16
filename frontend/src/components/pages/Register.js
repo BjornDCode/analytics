@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Redirect } from 'react-router-dom'
+import { useState } from '@hookstate/core'
 
 import api from '~/helpers/api'
 
@@ -16,38 +17,42 @@ import FormInput from '@/forms/FormInput'
 import FormError from '@/forms/FormError'
 
 const Register = () => {
-    const [error, setError] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [form, setForm] = useState({
+    const error = useState(false)
+    const success = useState(false)
+    const form = useState({
         username: '',
         email: '',
         password: '',
         password_confirmation: '',
     })
-    const update = (key, value) => setForm({ ...form, [key]: value })
+    const update = (key, value) => form[key].set(value)
 
     const register = async data => {
         api.post('/register', data, (response, data) => {
             if (response.status !== 200) {
-                return setError(data.message)
+                return error.set(data.message)
             }
 
-            setSuccess(true)
+            success.set(true)
         })
     }
 
-    return success ? (
+    return success.get() ? (
         <Redirect to="/login" />
     ) : (
         <Simple headline="Register">
-            <Stack Component={Form} spacing={4} onSubmit={() => register(form)}>
+            <Stack
+                Component={Form}
+                spacing={4}
+                onSubmit={() => register(form.get())}
+            >
                 <FormGroup>
                     <FormLabel>Username</FormLabel>
                     <FormInput
                         type="text"
                         name="username"
                         placeholder="John"
-                        value={form.username}
+                        value={form.username.get()}
                         onChange={event =>
                             update('username', event.target.value)
                         }
@@ -59,7 +64,7 @@ const Register = () => {
                         type="email"
                         name="email"
                         placeholder="test@example.com"
-                        value={form.email}
+                        value={form.email.get()}
                         onChange={event => update('email', event.target.value)}
                     />
                 </FormGroup>
@@ -69,7 +74,7 @@ const Register = () => {
                         type="password"
                         name="password"
                         placeholder="Password"
-                        value={form.password}
+                        value={form.password.get()}
                         onChange={event =>
                             update('password', event.target.value)
                         }
@@ -81,7 +86,7 @@ const Register = () => {
                         type="password"
                         name="password_confirmation"
                         placeholder="Confirm password"
-                        value={form.password_confirmation}
+                        value={form.password_confirmation.get()}
                         onChange={event =>
                             update('password_confirmation', event.target.value)
                         }
@@ -92,7 +97,7 @@ const Register = () => {
                     <Button type="submit">Register</Button>
                 </Shelf>
 
-                {error && <FormError>{error}</FormError>}
+                {error.get() && <FormError>{error.get()}</FormError>}
             </Stack>
         </Simple>
     )

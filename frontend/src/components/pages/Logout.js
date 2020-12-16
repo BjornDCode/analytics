@@ -1,26 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Redirect } from 'react-router-dom'
+import { useState } from '@hookstate/core'
 
 import api from '~/helpers/api'
+import authState from '~/state/auth'
 import useMounted from '~/hooks/useMounted'
 
 import Shell from '@/layouts/Shell'
 
-const Logout = ({ setAuthenticated }) => {
-    const [finished, setFinished] = useState(false)
+const Logout = () => {
+    const authenticated = useState(authState).authenticated
 
     useMounted(() => {
         api.post('/logout', {}, () => {
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
-            setFinished(true)
-            setAuthenticated(false)
+            authenticated.set(false)
         })
     })
 
-    return finished ? (
-        <Redirect to="/" />
-    ) : (
+    return (
         <Shell>
             <p>Logging out</p>
         </Shell>
