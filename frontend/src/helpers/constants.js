@@ -7,3 +7,5 @@ export const breakpoints = {
     df: '0px',
     ...config.theme.screens,
 }
+
+export const colors = config.theme.colors

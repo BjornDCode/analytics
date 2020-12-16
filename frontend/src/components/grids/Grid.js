@@ -5,7 +5,6 @@ import { useClasses, propToClasses } from '~/hooks/useClasses'
 import Box from '@/primitives/Box'
 
 const Grid = ({ columns = 1, gap, className = '', children, ...props }) => {
-    console.log('columns', columns)
     const classes = useClasses(
         className,
         propToClasses({ df: 1, md: columns }, value => `grid-columns-${value}`),
