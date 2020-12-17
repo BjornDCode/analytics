@@ -1,5 +1,4 @@
 const express = require('express')
-const randomWords = require('random-words')
 
 const tokens = require('../utils/tokens')
 const database = require('../utils/database')
@@ -66,11 +65,6 @@ router.post('/register', async (request, response) => {
             email
         )}">Confirm email</a>`
     )
-
-    // Store dummy data for user
-    for (let i = 0; i < 10; i++) {
-        database.storePost(randomWords(5).join(' '), user.id)
-    }
 
     return response.send({
         message: 'User created',

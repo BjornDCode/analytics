@@ -149,24 +149,73 @@ const deleteRefreshToken = async id => {
     await db.end()
 }
 
-const getPostsByUserId = async id => {
+const getProjectsByUserId = async id => {
     const db = await getConnection()
     const results = await db.query(
-        SqlString.format('SELECT * FROM posts WHERE user_id = ?', [id])
+        SqlString.format('SELECT * FROM projects WHERE user_id = ?', [id])
     )
     await db.end()
 
     return results
 }
 
-const storePost = async (title, id) => {
+const getProjectByIdAndUserId = async (id, user_id) => {
     const db = await getConnection()
     const results = await db.query(
-        SqlString.format('INSERT INTO posts (title, user_id) VALUES (?, ?)', [
-            title,
+        SqlString.format(
+            'SELECT * FROM projects WHERE id = ? AND user_id = ?',
+            [id, user_id]
+        )
+    )
+    await db.end()
+
+    return results.length ? results[0] : null
+}
+
+const getProjectById = async id => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('SELECT * FROM projects WHERE id = ?', [id])
+    )
+    await db.end()
+
+    return results.length ? results[0] : null
+}
+
+const storeProject = async (name, user_id) => {
+    const db = await getConnection()
+    await db.query(
+        SqlString.format('INSERT INTO projects (name, user_id) VALUES (?, ?)', [
+            name,
+            user_id,
+        ])
+    )
+    const result = await db.query(
+        SqlString.format('SELECT * FROM projects WHERE id = LAST_INSERT_ID()')
+    )
+    await db.end()
+
+    return result[0]
+}
+
+const updateProject = async (id, name) => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('UPDATE projects SET name = ? WHERE id = ?', [
+            name,
             id,
         ])
     )
+    await db.end()
+
+    const result = await getProjectById(id)
+
+    return result
+}
+
+const deleteProject = async id => {
+    const db = await getConnection()
+    await db.query(SqlString.format('DELETE FROM projects WHERE id = ?', [id]))
     await db.end()
 }
 
@@ -178,6 +227,9 @@ module.exports = {
     getRefreshTokenByToken,
     storeRefreshToken,
     deleteRefreshToken,
-    getPostsByUserId,
-    storePost,
+    getProjectsByUserId,
+    getProjectByIdAndUserId,
+    storeProject,
+    updateProject,
+    deleteProject,
 }
