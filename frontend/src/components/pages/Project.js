@@ -7,7 +7,7 @@ import projectsState from '~/state/projects'
 import Grid from '@/grids/Grid'
 import GridColumn from '@/grids/GridColumn'
 
-import BarChart from '@/charts/BarChart'
+import GroupedBarChart from '@/charts/GroupedBarChart'
 import ListChart from '@/charts/ListChart'
 
 import Stack from '@/primitives/Stack'
@@ -157,7 +157,7 @@ const Project = () => {
 
                 <Grid columns={12} gap={6}>
                     <GridColumn span={12}>
-                        <BarChart height={400} data={barData} />
+                        <GroupedBarChart height={400} data={barData} />
                     </GridColumn>
                     <GridColumn span={4}>
                         <ListChart headline="Events" data={eventsData} />

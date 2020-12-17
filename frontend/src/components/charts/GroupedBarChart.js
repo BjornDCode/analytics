@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    BarChart as RechartsBarChart,
+    BarChart,
     ResponsiveContainer,
     Legend,
     CartesianGrid,
@@ -15,7 +15,7 @@ import { colors } from '~/helpers/constants'
 import Box from '@/primitives/Box'
 import ChartContainer from '@/charts/ChartContainer'
 
-const BarChart = ({ height, data, headline }) => {
+const GroupedBarChart = ({ height, data, headline }) => {
     const bars = Object.keys(data[0])
         .filter(key => key !== 'name')
         .map((key, index) => ({
@@ -27,7 +27,7 @@ const BarChart = ({ height, data, headline }) => {
         <ChartContainer height={height} headline={headline}>
             <Box space={6}>
                 <ResponsiveContainer width="100%" height={height}>
-                    <RechartsBarChart data={data}>
+                    <BarChart data={data}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
@@ -40,11 +40,11 @@ const BarChart = ({ height, data, headline }) => {
                                 fill={bar.color}
                             />
                         ))}
-                    </RechartsBarChart>
+                    </BarChart>
                 </ResponsiveContainer>
             </Box>
         </ChartContainer>
     )
 }
 
-export default BarChart
+export default GroupedBarChart
