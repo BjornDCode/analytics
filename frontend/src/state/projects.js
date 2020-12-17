@@ -18,9 +18,21 @@ export const fetchProjects = () => {
     })
 }
 
-export const createProject = ({ name = '' }, callback) => {
+export const createProject = ({ name = '' }, callback = () => {}) => {
     api.post('/projects', { name }, (response, data) => {
         if (response.status === 422) {
+            state.message.set(data.message)
+            return
+        }
+
+        state.items[data.project.id].set(data.project)
+        callback(data.project)
+    })
+}
+
+export const updateProject = ({ id, name = '' }, callback = () => {}) => {
+    api.put(`/projects/${id}`, { name }, (response, data) => {
+        if ([422, 404].includes(response.status)) {
             state.message.set(data.message)
             return
         }

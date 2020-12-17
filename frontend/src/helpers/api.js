@@ -51,9 +51,31 @@ const post = async (endpoint, body = {}, callback = () => {}) => {
     callback(response, data)
 }
 
+const put = async (endpoint, body = {}, callback = () => {}) => {
+    const accessToken = localStorage.getItem('accessToken')
+
+    let response = await fetch(`http://localhost:8080${endpoint}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(accessToken
+                ? {
+                      Authorization: `Bearer ${accessToken}`,
+                  }
+                : {}),
+        },
+        body: JSON.stringify(body),
+    })
+
+    const data = await response.json()
+
+    callback(response, data)
+}
+
 const api = {
     get,
     post,
+    put,
 }
 
 export default api

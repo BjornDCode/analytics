@@ -16,7 +16,7 @@ const Headline = ({ level = 2, children, ...props }) => {
     })
 
     return (
-        <Text Component={component} weight="bold" size={size} {...props}>
+        <Text Component={component} weight="semibold" size={size} {...props}>
             {children}
         </Text>
     )

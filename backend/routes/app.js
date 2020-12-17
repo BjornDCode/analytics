@@ -42,7 +42,7 @@ router.put('/projects/:id', authenticate, async (request, response) => {
     const updatedRecord = await database.updateProject(id, name)
 
     return response.json({
-        project: record,
+        project: updatedRecord,
     })
 })
 

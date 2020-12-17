@@ -8,6 +8,7 @@ import Login from '@/pages/Login'
 import Logout from '@/pages/Logout'
 import Register from '@/pages/Register'
 import ProjectCreate from '@/pages/ProjectCreate'
+import ProjectSettings from '@/pages/ProjectSettings'
 import Project from '@/pages/Project'
 import Event from '@/pages/Event'
 
@@ -33,6 +34,11 @@ const routes = [
         component: ProjectCreate,
         type: ProtectedRoute,
         path: '/projects/create',
+    },
+    {
+        component: ProjectSettings,
+        type: ProtectedRoute,
+        path: '/projects/:id/settings',
     },
     {
         component: Project,
