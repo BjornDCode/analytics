@@ -7,6 +7,9 @@ import { state as projectsState, fetchProjects } from '~/state/projects'
 import Simple from '@/layouts/Simple'
 
 import List from '@/primitives/List'
+import Stack from '@/primitives/Stack'
+import Shelf from '@/primitives/Shelf'
+import LinkButton from '@/primitives/LinkButton'
 import CardSkeleton from '@/primitives/CardSkeleton'
 import LinkListItem from '@/lists/LinkListItem'
 
@@ -24,16 +27,21 @@ const Dashboard = () => {
             {status === 'loading' ? (
                 <CardSkeleton />
             ) : (
-                <List>
-                    {projects.map(project => (
-                        <LinkListItem
-                            key={project.id}
-                            to={`projects/${project.id}`}
-                        >
-                            {project.name}
-                        </LinkListItem>
-                    ))}
-                </List>
+                <Stack spacing={4}>
+                    <List>
+                        {projects.map(project => (
+                            <LinkListItem
+                                key={project.id}
+                                to={`projects/${project.id}`}
+                            >
+                                {project.name}
+                            </LinkListItem>
+                        ))}
+                    </List>
+                    <Shelf justify="end">
+                        <LinkButton to="/projects/create">New</LinkButton>
+                    </Shelf>
+                </Stack>
             )}
         </Simple>
     )
