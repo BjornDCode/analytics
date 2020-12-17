@@ -14,6 +14,10 @@ const getConnection = async () => {
 const setup = async () => {
     const db = await getConnection()
 
+    const cleanup = `
+        DROP TABLE IF EXISTS users, refresh_tokens, projects, event_types, events;
+    `
+
     const usersTable = `
         CREATE TABLE users(
             id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -35,17 +39,43 @@ const setup = async () => {
         );
     `
 
-    const postsTable = `
-        CREATE TABLE posts(
+    const projectsTable = `
+        CREATE TABLE projects(
             id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
+            name VARCHAR(255) NOT NULL,
             user_id BIGINT(20) UNSIGNED NOT NULL
         );   
     `
 
+    const eventTypesTable = `
+        CREATE TABLE event_types(
+            id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            identifier VARCHAR(255) NOT NULL,
+            project_id BIGINT(20) UNSIGNED NOT NULL
+        );   
+    `
+
+    const eventsTable = `
+        CREATE TABLE events(
+            id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            trackee VARCHAR(255) NOT NULL,
+            value VARCHAR(255),
+            referrer VARCHAR(255) NOT NULL,
+            country VARCHAR(255) NOT NULL,
+            browser VARCHAR(255) NOT NULL,
+            os VARCHAR(255) NOT NULL,
+            device VARCHAR(255) NOT NULL,
+            event_type_id BIGINT(20) UNSIGNED NOT NULL
+        );   
+    `
+
+    await db.query(cleanup)
     await db.query(usersTable)
     await db.query(refreshTokensTable)
-    await db.query(postsTable)
+    await db.query(projectsTable)
+    await db.query(eventTypesTable)
+    await db.query(eventsTable)
 
     await db.end()
 }
