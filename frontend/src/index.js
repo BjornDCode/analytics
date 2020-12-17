@@ -4,9 +4,13 @@ import App from '@/App'
 import '~/style.css'
 import reportWebVitals from '~/reportWebVitals'
 
+import { SocketProvider } from '~/state/SocketContext'
+
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <SocketProvider>
+            <App />
+        </SocketProvider>
     </React.StrictMode>,
     document.getElementById('root')
 )

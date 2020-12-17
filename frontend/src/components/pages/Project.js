@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from '@hookstate/core'
+import io from 'socket.io-client'
 
 import useMounted from '~/hooks/useMounted'
+import useSocket from '~/hooks/useSocket'
 import { state as projectsState, fetchProjects } from '~/state/projects'
 import { fetchEvents } from '~/state/events'
 
@@ -24,11 +26,23 @@ const Project = () => {
     const { id } = useParams()
     const projects = useState(projectsState).items.get()
     const project = projects[id] || {}
+    const socket = useSocket()
 
     useMounted(() => {
         fetchProjects()
         fetchEvents()
     })
+
+    useEffect(() => {
+        if (!project.id) {
+            return
+        }
+
+        socket.emit('project', { id: project.id })
+        socket.on('data', data => {
+            console.log('data', data)
+        })
+    }, [project])
 
     const barData = [
         {
