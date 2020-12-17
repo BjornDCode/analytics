@@ -1,4 +1,4 @@
-import { createState } from '@hookstate/core'
+import { createState, none } from '@hookstate/core'
 
 import api from '~/helpers/api'
 import { keyById } from '~/helpers/methods'
@@ -39,5 +39,17 @@ export const updateProject = ({ id, name = '' }, callback = () => {}) => {
 
         state.items[data.project.id].set(data.project)
         callback(data.project)
+    })
+}
+
+export const deleteProject = ({ id }, callback = () => {}) => {
+    api.delete(`/projects/${id}`, (response, data) => {
+        if ([422, 404].includes(response.status)) {
+            state.message.set(data.message)
+            return
+        }
+
+        state.items[id].set(none)
+        callback()
     })
 }

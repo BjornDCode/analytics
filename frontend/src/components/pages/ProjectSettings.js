@@ -13,6 +13,7 @@ import Headline from '@/primitives/Headline'
 import Skeleton from '@/primitives/Skeleton'
 import Paragraph from '@/primitives/Paragraph'
 
+import DeleteProjectForm from '@/forms/DeleteProjectForm'
 import UpdateProjectSettingsForm from '@/forms/UpdateProjectSettingsForm'
 
 import Shell from '@/layouts/Shell'
@@ -50,6 +51,18 @@ const Project = () => {
                             state={state}
                             project={project}
                         />
+                    </GridColumn>
+                </Grid>
+
+                <Grid columns={12} gap={6}>
+                    <GridColumn span={4}>
+                        <Headline level={3}>Actions</Headline>
+                        <Paragraph>
+                            All actions you can perform on this project.
+                        </Paragraph>
+                    </GridColumn>
+                    <GridColumn span={4}>
+                        <DeleteProjectForm state={state} project={project} />
                     </GridColumn>
                 </Grid>
             </Stack>
