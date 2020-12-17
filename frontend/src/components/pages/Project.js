@@ -2,7 +2,8 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from '@hookstate/core'
 
-import projectsState from '~/state/projects'
+import useMounted from '~/hooks/useMounted'
+import { state as projectsState, fetchProjects } from '~/state/projects'
 
 import Grid from '@/grids/Grid'
 import GridColumn from '@/grids/GridColumn'
@@ -21,6 +22,10 @@ const Project = () => {
     const { id } = useParams()
     const projects = useState(projectsState)
     const project = projects[id]
+
+    useMounted(() => {
+        fetchProjects()
+    })
 
     const barData = [
         {

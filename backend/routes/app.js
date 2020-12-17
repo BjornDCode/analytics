@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/projects', authenticate, async (request, response) => {
     return response.json({
-        data: await database.getProjectsByUserId(request.user.id),
+        projects: await database.getProjectsByUserId(request.user.id),
     })
 })
 
@@ -20,7 +20,7 @@ router.post('/projects', authenticate, async (request, response) => {
     const record = await database.storeProject(name, request.user.id)
 
     return response.json({
-        data: record,
+        project: record,
     })
 })
 
@@ -42,7 +42,7 @@ router.put('/projects/:id', authenticate, async (request, response) => {
     const updatedRecord = await database.updateProject(id, name)
 
     return response.json({
-        data: record,
+        project: record,
     })
 })
 
