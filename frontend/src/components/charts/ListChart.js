@@ -39,7 +39,7 @@ const ListChart = ({ data, headline }) => {
             {data.map(entry => (
                 <LineChartLine
                     key={entry.id}
-                    label={entry.label}
+                    name={entry.name}
                     total={entry.total}
                     uniques={entry.uniques}
                     link={entry.link}

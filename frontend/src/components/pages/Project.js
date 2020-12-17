@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { Component, useEffect, useState as useReactState } from 'react'
+import { useParams, withRouter } from 'react-router-dom'
 import { useState } from '@hookstate/core'
 import io from 'socket.io-client'
 
 import useMounted from '~/hooks/useMounted'
 import useSocket from '~/hooks/useSocket'
+import SocketContext from '~/state/SocketContext'
 import { state as projectsState, fetchProjects } from '~/state/projects'
 import { fetchEvents } from '~/state/events'
 
@@ -27,6 +28,10 @@ const Project = () => {
     const projects = useState(projectsState).items.get()
     const project = projects[id] || {}
     const socket = useSocket()
+    const [overview, setOverview] = useReactState([])
+    const [events, setEvents] = useReactState([])
+    const [countries, setCountries] = useReactState([])
+    const [devices, setDevices] = useReactState([])
 
     useMounted(() => {
         fetchProjects()
@@ -40,77 +45,17 @@ const Project = () => {
 
         socket.emit('project', { id: project.id })
         socket.on('data', data => {
-            console.log('data', data)
+            setOverview(data.overview)
+            setEvents(
+                data.events.map(type => ({
+                    ...type,
+                    link: `/events/${type.id}`,
+                }))
+            )
+            setCountries(data.countries)
+            setDevices(data.devices)
         })
-    }, [project])
-
-    const barData = [
-        {
-            name: 'Dec 08, 2020',
-            'Page view': 4321,
-            'Sign up': 401,
-            Download: 297,
-        },
-        {
-            name: 'Dec 09, 2020',
-            'Page view': 3412,
-            'Sign up': 350,
-            Download: 310,
-        },
-        {
-            name: 'Dec 10, 2020',
-            'Page view': 3996,
-            'Sign up': 397,
-            Download: 412,
-        },
-        {
-            name: 'Dec 11, 2020',
-            'Page view': 4398,
-            'Sign up': 430,
-            Download: 478,
-        },
-        {
-            name: 'Dec 12, 2020',
-            'Page view': 3777,
-            'Sign up': 297,
-            Download: 430,
-        },
-        {
-            name: 'Dec 13, 2020',
-            'Page view': 3888,
-            'Sign up': 393,
-            Download: 401,
-        },
-        {
-            name: 'Dec 14, 2020',
-            'Page view': 4001,
-            'Sign up': 402,
-            Download: 415,
-        },
-    ]
-
-    const eventsData = [
-        {
-            id: 1,
-            label: 'Page view',
-            total: 53,
-            uniques: 32,
-            link: '/events/1',
-        },
-        {
-            id: 2,
-            label: 'Sign up',
-            total: 41,
-            uniques: 29,
-            link: '/events/2',
-        },
-        {
-            id: 3,
-            label: 'Download',
-            total: 35,
-            uniques: 12,
-        },
-    ]
+    }, [project.id])
 
     const devicesData = [
         {
@@ -133,39 +78,6 @@ const Project = () => {
         },
     ]
 
-    const countriesData = [
-        {
-            id: 1,
-            label: 'United States',
-            total: 212,
-            uniques: 107,
-        },
-        {
-            id: 2,
-            label: 'India',
-            total: 42,
-            uniques: 28,
-        },
-        {
-            id: 3,
-            label: 'Brazil',
-            total: 11,
-            uniques: 11,
-        },
-        {
-            id: 4,
-            label: 'United Kingdom',
-            total: 8,
-            uniques: 8,
-        },
-        {
-            id: 5,
-            label: 'Denmark',
-            total: 8,
-            uniques: 8,
-        },
-    ]
-
     return (
         <Shell>
             <Stack spacing={12}>
@@ -181,16 +93,16 @@ const Project = () => {
 
                 <Grid columns={12} gap={6}>
                     <GridColumn span={12}>
-                        <GroupedBarChart height={400} data={barData} />
+                        <GroupedBarChart height={400} data={overview} />
                     </GridColumn>
                     <GridColumn span={4}>
-                        <ListChart headline="Events" data={eventsData} />
+                        <ListChart headline="Events" data={events} />
                     </GridColumn>
                     <GridColumn span={4}>
-                        <ListChart headline="Devices" data={devicesData} />
+                        <ListChart headline="Devices" data={devices} />
                     </GridColumn>
                     <GridColumn span={4}>
-                        <ListChart headline="Countries" data={countriesData} />
+                        <ListChart headline="Countries" data={countries} />
                     </GridColumn>
                 </Grid>
             </Stack>
@@ -198,4 +110,4 @@ const Project = () => {
     )
 }
 
-export default Project
+export default withRouter(Project)

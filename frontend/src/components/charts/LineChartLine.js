@@ -19,7 +19,7 @@ const Value = ({ children, link }) => {
     )
 }
 
-const LineChartLine = ({ label, total, uniques, max, link }) => {
+const LineChartLine = ({ name, total, uniques, max, link }) => {
     const overlayWidth = (uniques / max) * 100
 
     const Component = link ? Link : 'div'
@@ -42,7 +42,7 @@ const LineChartLine = ({ label, total, uniques, max, link }) => {
                 className="z-10"
             >
                 <GridColumn span={3}>
-                    <Value link={link}>{label}</Value>
+                    <Value link={link}>{name}</Value>
                 </GridColumn>
                 <GridColumn display="flex" align="center" justify="end">
                     <Value link={link}>{total}</Value>

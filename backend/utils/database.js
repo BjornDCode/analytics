@@ -1,6 +1,10 @@
 const mysql = require('promise-mysql')
 const SqlString = require('sqlstring')
 
+const xDaysAgo = require('./helpers').xDaysAgo
+const randomDateWithinXDays = require('./helpers').randomDateWithinXDays
+const getSqlFormattedDateString = require('./helpers').getSqlFormattedDateString
+
 const getConnection = async () => {
     return await mysql.createConnection({
         host: process.env.DB_HOST,
@@ -72,6 +76,7 @@ const setup = async () => {
             os VARCHAR(255) NOT NULL,
             device VARCHAR(255) NOT NULL,
             event_type_id BIGINT(20) UNSIGNED NOT NULL,
+            created_at TIMESTAMP DEFAULT NOW(),
             FOREIGN KEY (event_type_id) REFERENCES event_types(id) ON DELETE CASCADE
         );   
     `
@@ -213,15 +218,23 @@ const setup = async () => {
             const value =
                 i < 3 ? paths[Math.floor(Math.random() * paths.length)] : null
 
-            await storeEvent(
-                id,
-                trackee,
-                value,
-                referrer,
-                country,
-                browser,
-                device,
-                os
+            await db.query(
+                SqlString.format(
+                    'INSERT INTO events (event_type_id, trackee, value, referrer, country, browser, device, os, created_at) VALUES (?)',
+                    [
+                        [
+                            id,
+                            trackee,
+                            value,
+                            referrer,
+                            country,
+                            browser,
+                            device,
+                            os,
+                            randomDateWithinXDays(7),
+                        ],
+                    ]
+                )
             )
         }
     }
@@ -409,6 +422,17 @@ const getEventTypeByIdentifierAndProject = async (identifier, project_id) => {
     return results.length ? results[0] : null
 }
 
+const getEventsByProjectId = async project_id => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('SELECT * FROM event_types WHERE project_id = ?', [
+            project_id,
+        ])
+    )
+    await db.end()
+
+    return results
+}
 const getEventsByProjectIds = async (project_ids = []) => {
     const db = await getConnection()
     const results = await db.query(
@@ -460,6 +484,19 @@ const storeEvent = async (
     await db.end()
 }
 
+const getEventsForLast7Days = async () => {
+    const db = await getConnection()
+
+    const results = await db.query(
+        SqlString.format('SELECT * FROM events WHERE created_at > (?)', [
+            getSqlFormattedDateString(xDaysAgo(7)),
+        ])
+    )
+    await db.end()
+
+    return results
+}
+
 module.exports = {
     setup,
     getUserByEmail,
@@ -478,6 +515,8 @@ module.exports = {
     getEventTypeById,
     getEventTypeByIdentifierAndProject,
     getEventsByProjectIds,
+    getEventsByProjectId,
     deleteEventType,
     storeEvent,
+    getEventsForLast7Days,
 }
