@@ -14,9 +14,11 @@ const getConnection = async () => {
 const setup = async () => {
     const db = await getConnection()
 
+    const disableForeignKeys = `SET foreign_key_checks = 0;`
     const cleanup = `
-        DROP TABLE IF EXISTS users, refresh_tokens, projects, event_types, events;
+       DROP TABLE IF EXISTS users, refresh_tokens, projects, event_types, events; 
     `
+    const enableForeignKeys = `SET foreign_key_checks = 1;`
 
     const usersTable = `
         CREATE TABLE users(
@@ -35,7 +37,8 @@ const setup = async () => {
         CREATE TABLE refresh_tokens(
             id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
             token VARCHAR(255) NOT NULL,
-            user_id BIGINT(20) UNSIGNED NOT NULL
+            user_id BIGINT(20) UNSIGNED NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     `
 
@@ -43,7 +46,8 @@ const setup = async () => {
         CREATE TABLE projects(
             id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
-            user_id BIGINT(20) UNSIGNED NOT NULL
+            user_id BIGINT(20) UNSIGNED NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );   
     `
 
@@ -52,7 +56,8 @@ const setup = async () => {
             id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             identifier VARCHAR(255) NOT NULL,
-            project_id BIGINT(20) UNSIGNED NOT NULL
+            project_id BIGINT(20) UNSIGNED NOT NULL,
+            FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
         );   
     `
 
@@ -66,11 +71,14 @@ const setup = async () => {
             browser VARCHAR(255) NOT NULL,
             os VARCHAR(255) NOT NULL,
             device VARCHAR(255) NOT NULL,
-            event_type_id BIGINT(20) UNSIGNED NOT NULL
+            event_type_id BIGINT(20) UNSIGNED NOT NULL,
+            FOREIGN KEY (event_type_id) REFERENCES event_types(id) ON DELETE CASCADE
         );   
     `
 
+    await db.query(disableForeignKeys)
     await db.query(cleanup)
+    await db.query(enableForeignKeys)
     await db.query(usersTable)
     await db.query(refreshTokensTable)
     await db.query(projectsTable)
