@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[class*='SkeletonTheme'] > span {
+    @apply leading-8;
+}

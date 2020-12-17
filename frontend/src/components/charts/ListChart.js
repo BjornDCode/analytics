@@ -1,8 +1,8 @@
 import React from 'react'
 
 import LineChartLine from '@/charts/LineChartLine'
-import ChartContainer from '@/charts/ChartContainer'
 
+import Card from '@/primitives/Card'
 import Text from '@/primitives/Text'
 
 import Grid from '@/grids/Grid'
@@ -17,7 +17,7 @@ const Label = ({ children }) => (
 const ListChart = ({ data, headline }) => {
     const maxValue = Math.max(...data.map(entry => entry.total))
     return (
-        <ChartContainer>
+        <Card>
             <Grid
                 Component="header"
                 columns={5}
@@ -46,7 +46,7 @@ const ListChart = ({ data, headline }) => {
                     max={maxValue}
                 />
             ))}
-        </ChartContainer>
+        </Card>
     )
 }
 

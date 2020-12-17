@@ -7,10 +7,13 @@ import { state as projectsState, fetchProjects } from '~/state/projects'
 import Simple from '@/layouts/Simple'
 
 import List from '@/primitives/List'
+import CardSkeleton from '@/primitives/CardSkeleton'
 import LinkListItem from '@/lists/LinkListItem'
 
 const Dashboard = () => {
-    const projects = Object.values(useState(projectsState).get())
+    const state = useState(projectsState)
+    const projects = Object.values(state.items.get())
+    const status = state.status.get()
 
     useMounted(() => {
         fetchProjects()
@@ -18,16 +21,20 @@ const Dashboard = () => {
 
     return (
         <Simple headline="Projects">
-            <List>
-                {projects.map(project => (
-                    <LinkListItem
-                        key={project.id}
-                        to={`projects/${project.id}`}
-                    >
-                        {project.name}
-                    </LinkListItem>
-                ))}
-            </List>
+            {status === 'loading' ? (
+                <CardSkeleton />
+            ) : (
+                <List>
+                    {projects.map(project => (
+                        <LinkListItem
+                            key={project.id}
+                            to={`projects/${project.id}`}
+                        >
+                            {project.name}
+                        </LinkListItem>
+                    ))}
+                </List>
+            )}
         </Simple>
     )
 }

@@ -13,7 +13,7 @@ import {
 import { colors } from '~/helpers/constants'
 
 import Box from '@/primitives/Box'
-import ChartContainer from '@/charts/ChartContainer'
+import Card from '@/primitives/Card'
 
 const GroupedBarChart = ({ height, data, headline }) => {
     const bars = Object.keys(data[0])
@@ -24,7 +24,7 @@ const GroupedBarChart = ({ height, data, headline }) => {
         }))
 
     return (
-        <ChartContainer height={height} headline={headline}>
+        <Card height={height} headline={headline}>
             <Box space={6}>
                 <ResponsiveContainer width="100%" height={height}>
                     <BarChart data={data}>
@@ -43,7 +43,7 @@ const GroupedBarChart = ({ height, data, headline }) => {
                     </BarChart>
                 </ResponsiveContainer>
             </Box>
-        </ChartContainer>
+        </Card>
     )
 }
 

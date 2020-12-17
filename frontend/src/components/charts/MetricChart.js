@@ -1,13 +1,12 @@
 import React from 'react'
 
-import ChartContainer from '@/charts/ChartContainer'
-
 import Box from '@/primitives/Box'
+import Card from '@/primitives/Card'
 import Text from '@/primitives/Text'
 
 const MetricChart = ({ value, headline }) => {
     return (
-        <ChartContainer>
+        <Card>
             <Box
                 Component="header"
                 columns={5}
@@ -25,7 +24,7 @@ const MetricChart = ({ value, headline }) => {
                     {value}
                 </Text>
             </Box>
-        </ChartContainer>
+        </Card>
     )
 }
 

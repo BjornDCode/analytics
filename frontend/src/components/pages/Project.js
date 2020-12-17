@@ -13,6 +13,7 @@ import ListChart from '@/charts/ListChart'
 
 import Stack from '@/primitives/Stack'
 import Headline from '@/primitives/Headline'
+import Skeleton from '@/primitives/Skeleton'
 import LinkButton from '@/primitives/LinkButton'
 import StackShelf from '@/primitives/StackShelf'
 
@@ -20,8 +21,8 @@ import Shell from '@/layouts/Shell'
 
 const Project = () => {
     const { id } = useParams()
-    const projects = useState(projectsState)
-    const project = projects[id]
+    const projects = useState(projectsState).items.get()
+    const project = projects[id] || {}
 
     useMounted(() => {
         fetchProjects()
@@ -153,7 +154,9 @@ const Project = () => {
         <Shell>
             <Stack spacing={12}>
                 <StackShelf justify="between" align="center" spacing={4}>
-                    <Headline level={1}>{project.name.get()}</Headline>
+                    <Headline level={1}>
+                        {project.name || <Skeleton width={150} count={1} />}
+                    </Headline>
 
                     <LinkButton to={`/projects/${id}/settings`} size="small">
                         Settings
