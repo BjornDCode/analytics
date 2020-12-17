@@ -219,6 +219,37 @@ const deleteProject = async id => {
     await db.end()
 }
 
+const storeEventType = async (name, identifier, project_id) => {
+    const db = await getConnection()
+    await db.query(
+        SqlString.format(
+            'INSERT INTO event_types (name, identifier, project_id) VALUES (?, ?, ?)',
+            [name, identifier, project_id]
+        )
+    )
+    const result = await db.query(
+        SqlString.format(
+            'SELECT * FROM event_types WHERE id = LAST_INSERT_ID()'
+        )
+    )
+    await db.end()
+
+    return result[0]
+}
+
+const getEventTypeByIdentifierAndProject = async (identifier, project_id) => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format(
+            'SELECT * FROM event_types WHERE identifier = ? AND project_id = ?',
+            [identifier, project_id]
+        )
+    )
+    await db.end()
+
+    return results.length ? results[0] : null
+}
+
 module.exports = {
     setup,
     getUserByEmail,
@@ -232,4 +263,6 @@ module.exports = {
     storeProject,
     updateProject,
     deleteProject,
+    storeEventType,
+    getEventTypeByIdentifierAndProject,
 }
