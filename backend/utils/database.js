@@ -237,6 +237,16 @@ const storeEventType = async (name, identifier, project_id) => {
     return result[0]
 }
 
+const getEventTypeById = async id => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('SELECT * FROM event_types WHERE id = ?', [id])
+    )
+    await db.end()
+
+    return results.length ? results[0] : null
+}
+
 const getEventTypeByIdentifierAndProject = async (identifier, project_id) => {
     const db = await getConnection()
     const results = await db.query(
@@ -248,6 +258,14 @@ const getEventTypeByIdentifierAndProject = async (identifier, project_id) => {
     await db.end()
 
     return results.length ? results[0] : null
+}
+
+const deleteEventType = async id => {
+    const db = await getConnection()
+    await db.query(
+        SqlString.format('DELETE FROM event_types WHERE id = ?', [id])
+    )
+    await db.end()
 }
 
 module.exports = {
@@ -264,5 +282,7 @@ module.exports = {
     updateProject,
     deleteProject,
     storeEventType,
+    getEventTypeById,
     getEventTypeByIdentifierAndProject,
+    deleteEventType,
 }

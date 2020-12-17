@@ -109,4 +109,27 @@ router.post('/event-types', authenticate, async (request, response) => {
     })
 })
 
+router.delete('/event-types/:id', authenticate, async (request, response) => {
+    const id = request.params.id || ''
+
+    const record = await database.getEventTypeById(id, request.user.id)
+
+    if (!record) {
+        return errorResponse(response, 404, 'Event type not found')
+    }
+
+    const project = await database.getProjectByIdAndUserId(
+        record.project_id,
+        request.user.id
+    )
+
+    if (!project) {
+        return errorResponse(response, 404, 'Event type not found')
+    }
+
+    await database.deleteEventType(id)
+
+    return response.json({})
+})
+
 module.exports = router
