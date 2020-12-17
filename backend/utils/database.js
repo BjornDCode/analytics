@@ -288,6 +288,37 @@ const deleteEventType = async id => {
     await db.end()
 }
 
+const storeEvent = async (
+    event_type_id,
+    trackee,
+    value,
+    referrer,
+    country,
+    browser,
+    device,
+    os
+) => {
+    const db = await getConnection()
+    await db.query(
+        SqlString.format(
+            'INSERT INTO events (event_type_id, trackee, value, referrer, country, browser, device, os) VALUES (?)',
+            [
+                [
+                    event_type_id,
+                    trackee,
+                    value,
+                    referrer,
+                    country,
+                    browser,
+                    device,
+                    os,
+                ],
+            ]
+        )
+    )
+    await db.end()
+}
+
 module.exports = {
     setup,
     getUserByEmail,
@@ -296,6 +327,7 @@ module.exports = {
     getRefreshTokenByToken,
     storeRefreshToken,
     deleteRefreshToken,
+    getProjectById,
     getProjectsByUserId,
     getProjectByIdAndUserId,
     storeProject,
@@ -306,4 +338,5 @@ module.exports = {
     getEventTypeByIdentifierAndProject,
     getEventsByProjectIds,
     deleteEventType,
+    storeEvent,
 }

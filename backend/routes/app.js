@@ -143,4 +143,62 @@ router.delete('/event-types/:id', authenticate, async (request, response) => {
     return response.json({})
 })
 
+router.get('/track', async (request, response) => {
+    const {
+        project: project_id,
+        event: identifier,
+        trackee,
+        value,
+        referrer,
+        country,
+        browser,
+        device,
+        os,
+    } = request.query
+
+    // Check that all parameters (except for value) are included in the request
+    if (
+        [
+            project_id,
+            identifier,
+            trackee,
+            referrer,
+            country,
+            browser,
+            device,
+            os,
+        ].some(value => !value)
+    ) {
+        return response.send('Discarded')
+    }
+
+    const project = await database.getProjectById(project_id)
+
+    if (!project) {
+        return response.send('Discarded')
+    }
+
+    const eventType = await database.getEventTypeByIdentifierAndProject(
+        identifier,
+        project_id
+    )
+
+    if (!eventType) {
+        return response.send('Discarded')
+    }
+
+    await database.storeEvent(
+        eventType.id,
+        trackee,
+        value,
+        referrer,
+        country,
+        browser,
+        device,
+        os
+    )
+
+    return response.send('Tracked')
+})
+
 module.exports = router
