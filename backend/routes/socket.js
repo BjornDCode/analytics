@@ -1,5 +1,8 @@
 const server = require('../app').server
 const io = require('socket.io')(server)
+const authenticate = require('../middleware/authenticateSocket')
+
+io.use(authenticate)
 
 io.on('connection', socket => {
     socket.on('project', ({ id }) => {
