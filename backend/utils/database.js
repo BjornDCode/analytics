@@ -85,6 +85,147 @@ const setup = async () => {
     await db.query(eventTypesTable)
     await db.query(eventsTable)
 
+    // Generate dummy data
+    await storeUser(
+        'test',
+        'a@a.com',
+        '$2b$10$8GjTsvxkHy1EbBOfEsHYpOl/31LPcjXrJhNKYewcSo/Q5SDuKw60m'
+    )
+
+    await storeProject('test.app', 1)
+    await storeProject('random.dev', 1)
+    await storeProject('cool.io', 1)
+
+    await storeEventType('Page view', 'PAGE_VIEW', 1)
+    await storeEventType('Page view', 'PAGE_VIEW', 2)
+    await storeEventType('Page view', 'PAGE_VIEW', 3)
+
+    await storeEventType('Sign up', 'SIGN_UP', 1)
+    await storeEventType('Sign up', 'SIGN_UP', 2)
+    await storeEventType('Sign up', 'SIGN_UP', 3)
+
+    await storeEventType('Download', 'DOWNLOAD', 1)
+    await storeEventType('Download', 'DOWNLOAD', 2)
+    await storeEventType('Download', 'DOWNLOAD', 3)
+
+    const countries = [
+        'United States',
+        'United States',
+        'United States',
+        'United States',
+        'United Kingdom',
+        'United Kingdom',
+        'United Kingdom',
+        'Algeria',
+        'Brazil',
+        'Brazil',
+        'Denmark',
+        'Sweden',
+        'Norway',
+    ]
+    const devices = ['Phone', 'Phone', 'Phone', 'Tablet', 'Desktop', 'Desktop']
+    const systems = [
+        'iOS',
+        'iOS',
+        'iOS',
+        'iOS',
+        'iOS',
+        'Android',
+        'Android',
+        'Android',
+        'iPadOS',
+        'macOS',
+        'macOS',
+        'Windows',
+        'Windows',
+        'Windows',
+        'Linux',
+    ]
+    const browsers = [
+        'Chrome',
+        'Chrome',
+        'Chrome',
+        'Firefox',
+        'Edge',
+        'Safari',
+        'Safari',
+    ]
+    const referrers = [
+        'github.com',
+        'github.com',
+        'github.com',
+        'google.com',
+        'google.com',
+        'google.com',
+        'google.com',
+        'google.com',
+        'reddit.com',
+        'indiehackers.com',
+        'linkedin.com',
+        'twitter.com',
+        'twitter.com',
+        'facebook.com',
+        'facebook.com',
+        'facebook.com',
+    ]
+    const paths = [
+        '/',
+        '/',
+        '/',
+        '/',
+        '/',
+        '/about',
+        '/about',
+        '/about',
+        '/products',
+        '/products',
+        '/products/1',
+        '/products/2',
+        '/products/3',
+        '/products/4',
+    ]
+    const trackees = [
+        '9c5e444b-4eb4-4833-bedf-51661b71d168',
+        'eee3acf1-b9f8-4265-9c39-3100caf0dcca',
+        '53a6e126-62ba-476e-8bae-1422807bb036',
+        '1ccbbd1b-8e8b-4bd5-8cbf-d840d9e0316d',
+        'aa01b366-07f2-4c4f-b44c-122d324d62f7',
+        '764ad4b4-5394-47bf-b063-7eabb106a764',
+        '99b10dd4-1356-40ba-86e0-aa582a7bf468',
+    ]
+
+    // Create events for each event type
+    for (let i = 0; i < 9; i++) {
+        const id = i + 1
+        let count = 0
+
+        for (let j = 0; j < Math.floor(Math.random() * 200) + 5; j++) {
+            const trackee =
+                trackees[Math.floor(Math.random() * trackees.length)]
+            const country =
+                countries[Math.floor(Math.random() * countries.length)]
+            const device = devices[Math.floor(Math.random() * devices.length)]
+            const os = systems[Math.floor(Math.random() * systems.length)]
+            const browser =
+                browsers[Math.floor(Math.random() * browsers.length)]
+            const referrer =
+                referrers[Math.floor(Math.random() * referrers.length)]
+            const value =
+                i < 3 ? paths[Math.floor(Math.random() * paths.length)] : null
+
+            await storeEvent(
+                id,
+                trackee,
+                value,
+                referrer,
+                country,
+                browser,
+                device,
+                os
+            )
+        }
+    }
+
     await db.end()
 }
 
