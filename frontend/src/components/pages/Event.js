@@ -2,7 +2,9 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from '@hookstate/core'
 
-import eventsState from '~/state/events'
+import useMounted from '~/hooks/useMounted'
+import { state as eventsState, fetchEvents } from '~/state/events'
+import { fetchProjects } from '~/state/projects'
 
 import Grid from '@/grids/Grid'
 import GridColumn from '@/grids/GridColumn'
@@ -13,6 +15,7 @@ import MetricChart from '@/charts/MetricChart'
 
 import Stack from '@/primitives/Stack'
 import Headline from '@/primitives/Headline'
+import Skeleton from '@/primitives/Skeleton'
 import LinkButton from '@/primitives/LinkButton'
 import StackShelf from '@/primitives/StackShelf'
 
@@ -20,8 +23,13 @@ import Shell from '@/layouts/Shell'
 
 const Event = () => {
     const { id } = useParams()
-    const events = useState(eventsState)
-    const event = events[id]
+    const events = useState(eventsState).items.get()
+    const event = events[id] || {}
+
+    useMounted(() => {
+        fetchProjects()
+        fetchEvents()
+    })
 
     const barData = [
         {
@@ -98,7 +106,9 @@ const Event = () => {
         <Shell>
             <Stack spacing={12}>
                 <StackShelf justify="between" align="center" spacing={4}>
-                    <Headline level={1}>{event.name.get()}</Headline>
+                    <Headline level={1}>
+                        {event.name || <Skeleton width={150} count={1} />}
+                    </Headline>
 
                     <LinkButton to={`/events/${id}/settings`} size="small">
                         Settings

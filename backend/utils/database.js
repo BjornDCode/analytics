@@ -268,6 +268,18 @@ const getEventTypeByIdentifierAndProject = async (identifier, project_id) => {
     return results.length ? results[0] : null
 }
 
+const getEventsByProjectIds = async (project_ids = []) => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('SELECT * FROM event_types WHERE project_id IN (?)', [
+            project_ids,
+        ])
+    )
+    await db.end()
+
+    return results
+}
+
 const deleteEventType = async id => {
     const db = await getConnection()
     await db.query(
@@ -292,5 +304,6 @@ module.exports = {
     storeEventType,
     getEventTypeById,
     getEventTypeByIdentifierAndProject,
+    getEventsByProjectIds,
     deleteEventType,
 }

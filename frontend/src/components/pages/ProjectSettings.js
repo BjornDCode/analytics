@@ -4,6 +4,7 @@ import { useState } from '@hookstate/core'
 
 import useMounted from '~/hooks/useMounted'
 import { state as projectsState, fetchProjects } from '~/state/projects'
+import { fetchEvents } from '~/state/events'
 
 import Grid from '@/grids/Grid'
 import GridColumn from '@/grids/GridColumn'
@@ -13,7 +14,10 @@ import Headline from '@/primitives/Headline'
 import Skeleton from '@/primitives/Skeleton'
 import Paragraph from '@/primitives/Paragraph'
 
+import EventTypesList from '@/lists/EventTypesList'
+
 import DeleteProjectForm from '@/forms/DeleteProjectForm'
+import CreateEventTypesForm from '@/forms/CreateEventTypesForm'
 import UpdateProjectSettingsForm from '@/forms/UpdateProjectSettingsForm'
 
 import Shell from '@/layouts/Shell'
@@ -26,6 +30,7 @@ const Project = () => {
 
     useMounted(() => {
         fetchProjects()
+        fetchEvents()
     })
 
     return (
@@ -51,6 +56,19 @@ const Project = () => {
                             state={state}
                             project={project}
                         />
+                    </GridColumn>
+                </Grid>
+
+                <Grid columns={12} gap={6}>
+                    <GridColumn span={4}>
+                        <Headline level={3}>Events</Headline>
+                        <Paragraph>Manage events for this project.</Paragraph>
+                    </GridColumn>
+                    <GridColumn span={4}>
+                        <Stack spacing={8}>
+                            <EventTypesList project={project} />
+                            <CreateEventTypesForm project={project} />
+                        </Stack>
                     </GridColumn>
                 </Grid>
 

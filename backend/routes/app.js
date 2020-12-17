@@ -63,6 +63,17 @@ router.delete('/projects/:id', authenticate, async (request, response) => {
     return response.json({})
 })
 
+router.get('/event-types', authenticate, async (request, response) => {
+    const projects = await database.getProjectsByUserId(request.user.id)
+    const ids = [...projects].map(project => project.id)
+
+    const eventTypes = await database.getEventsByProjectIds(ids)
+
+    return response.json({
+        eventTypes: eventTypes,
+    })
+})
+
 router.post('/event-types', authenticate, async (request, response) => {
     const name = request.body.name || ''
     const identifier = request.body.identifier || ''

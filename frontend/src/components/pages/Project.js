@@ -4,6 +4,7 @@ import { useState } from '@hookstate/core'
 
 import useMounted from '~/hooks/useMounted'
 import { state as projectsState, fetchProjects } from '~/state/projects'
+import { fetchEvents } from '~/state/events'
 
 import Grid from '@/grids/Grid'
 import GridColumn from '@/grids/GridColumn'
@@ -26,6 +27,7 @@ const Project = () => {
 
     useMounted(() => {
         fetchProjects()
+        fetchEvents()
     })
 
     const barData = [
