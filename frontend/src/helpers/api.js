@@ -1,4 +1,4 @@
-const baseUrl = process.env.API_URL || 'http://localhost:8080'
+const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080'
 console.log('baseUrl', baseUrl)
 
 const get = async (endpoint, callback) => {
