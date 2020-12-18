@@ -1,7 +1,9 @@
+const baseUrl = process.env.API_URL || 'http://localhost:8080'
+
 const get = async (endpoint, callback) => {
     const accessToken = localStorage.getItem('accessToken')
 
-    let response = await fetch(`http://localhost:8080${endpoint}`, {
+    let response = await fetch(`${baseUrl}${endpoint}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -33,7 +35,7 @@ const get = async (endpoint, callback) => {
 const post = async (endpoint, body = {}, callback = () => {}) => {
     const accessToken = localStorage.getItem('accessToken')
 
-    let response = await fetch(`http://localhost:8080${endpoint}`, {
+    let response = await fetch(`${baseUrl}${endpoint}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ const post = async (endpoint, body = {}, callback = () => {}) => {
 const put = async (endpoint, body = {}, callback = () => {}) => {
     const accessToken = localStorage.getItem('accessToken')
 
-    let response = await fetch(`http://localhost:8080${endpoint}`, {
+    let response = await fetch(`${baseUrl}${endpoint}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -75,7 +77,7 @@ const put = async (endpoint, body = {}, callback = () => {}) => {
 const deleteRequest = async (endpoint, callback = () => {}) => {
     const accessToken = localStorage.getItem('accessToken')
 
-    let response = await fetch(`http://localhost:8080${endpoint}`, {
+    let response = await fetch(`${baseUrl}${endpoint}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

@@ -1,8 +1,9 @@
 import { createContext, useContext } from 'react'
 import io from 'socket.io-client'
 
+const baseUrl = process.env.API_URL || 'http://localhost:8080'
 const accessToken = localStorage.getItem('accessToken')
-const socket = io('http://localhost:8080', {
+const socket = io(baseUrl, {
     query: { token: accessToken },
     transports: ['websocket'],
 })
