@@ -19,6 +19,9 @@ module.exports = {
             ],
         },
     },
+    eslint: {
+        enable: false,
+    },
     webpack: {
         configure: webpackConfig => {
             const scopePluginIndex = webpackConfig.resolve.plugins.findIndex(

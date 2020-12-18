@@ -36,7 +36,6 @@ const Project = () => {
         fetchEvents()
     })
 
-    /* eslint-disable */
     useEffect(() => {
         if (!project.id) {
             return
@@ -58,7 +57,6 @@ const Project = () => {
             setDevices(data.devices)
         })
     }, [project.id])
-    /* eslint-enable */
 
     return (
         <Shell>

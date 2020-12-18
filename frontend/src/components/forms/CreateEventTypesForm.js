@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useState } from '@hookstate/core'
-import { Redirect } from 'react-router-dom'
 
 import useUnmounted from '~/hooks/useUnmounted'
 import { state as eventsState, createEventType } from '~/state/events'
