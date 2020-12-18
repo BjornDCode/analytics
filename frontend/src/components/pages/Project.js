@@ -1,11 +1,9 @@
-import React, { Component, useEffect, useState as useReactState } from 'react'
+import React, { useEffect, useState as useReactState } from 'react'
 import { useParams, withRouter } from 'react-router-dom'
 import { useState } from '@hookstate/core'
-import io from 'socket.io-client'
 
 import useMounted from '~/hooks/useMounted'
 import useSocket from '~/hooks/useSocket'
-import SocketContext from '~/state/SocketContext'
 import { state as projectsState, fetchProjects } from '~/state/projects'
 import { fetchEvents } from '~/state/events'
 
@@ -38,6 +36,7 @@ const Project = () => {
         fetchEvents()
     })
 
+    /* eslint-disable */
     useEffect(() => {
         if (!project.id) {
             return
@@ -59,27 +58,7 @@ const Project = () => {
             setDevices(data.devices)
         })
     }, [project.id])
-
-    const devicesData = [
-        {
-            id: 1,
-            label: 'Phone',
-            total: 107,
-            uniques: 88,
-        },
-        {
-            id: 2,
-            label: 'Deskop',
-            total: 57,
-            uniques: 57,
-        },
-        {
-            id: 3,
-            label: 'Tablet',
-            total: 11,
-            uniques: 4,
-        },
-    ]
+    /* eslint-enable */
 
     return (
         <Shell>
