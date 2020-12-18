@@ -44,6 +44,9 @@ const Project = () => {
         }
 
         socket.emit('project', { id: project.id })
+        socket.on('update', () => {
+            socket.emit('project', { id: project.id })
+        })
         socket.on('data', data => {
             setOverview(data.overview)
             setEvents(

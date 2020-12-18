@@ -20,7 +20,7 @@ const setup = async () => {
 
     const disableForeignKeys = `SET foreign_key_checks = 0;`
     const cleanup = `
-       DROP TABLE IF EXISTS users, refresh_tokens, projects, event_types, events; 
+       DROP TABLE IF EXISTS users, refresh_tokens, projects, event_types, events, connections; 
     `
     const enableForeignKeys = `SET foreign_key_checks = 1;`
 
@@ -81,6 +81,14 @@ const setup = async () => {
         );   
     `
 
+    const connectionsTable = `
+        CREATE TABLE connections(
+            id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            socket_id VARCHAR(255) NOT NULL,
+            project_id BIGINT(20) UNSIGNED NOT NULL
+        );   
+    `
+
     await db.query(disableForeignKeys)
     await db.query(cleanup)
     await db.query(enableForeignKeys)
@@ -89,6 +97,7 @@ const setup = async () => {
     await db.query(projectsTable)
     await db.query(eventTypesTable)
     await db.query(eventsTable)
+    await db.query(connectionsTable)
 
     // Generate dummy data
     await storeUser(
@@ -497,6 +506,39 @@ const getEventsForLast7Days = async () => {
     return results
 }
 
+const getConnectionsByProjectId = async project_id => {
+    const db = await getConnection()
+    const results = await db.query(
+        SqlString.format('SELECT * FROM connections WHERE project_id = ?', [
+            project_id,
+        ])
+    )
+    await db.end()
+
+    return results
+}
+
+const storeConnection = async (socket_id, project_id) => {
+    const db = await getConnection()
+    await db.query(
+        SqlString.format(
+            'REPLACE INTO connections (socket_id, project_id) VALUES (?, ?)',
+            [socket_id, project_id]
+        )
+    )
+    await db.end()
+}
+
+const deleteConnection = async socket_id => {
+    const db = await getConnection()
+    await db.query(
+        SqlString.format('DELETE FROM connections WHERE socket_id = ?', [
+            socket_id,
+        ])
+    )
+    await db.end()
+}
+
 module.exports = {
     setup,
     getUserByEmail,
@@ -519,4 +561,7 @@ module.exports = {
     deleteEventType,
     storeEvent,
     getEventsForLast7Days,
+    getConnectionsByProjectId,
+    storeConnection,
+    deleteConnection,
 }

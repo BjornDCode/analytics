@@ -1,6 +1,7 @@
 const express = require('express')
 const authenticate = require('../middleware/authenticate')
 const database = require('../utils/database')
+const io = require('./socket')
 
 const router = express.Router()
 
@@ -197,6 +198,11 @@ router.get('/track', async (request, response) => {
         device,
         os
     )
+    const connections =
+        (await database.getConnectionsByProjectId(project_id)) || []
+    connections.forEach(connection => {
+        io.to(connection.socket_id).emit('update')
+    })
 
     return response.send('Tracked')
 })
